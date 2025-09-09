@@ -6,10 +6,10 @@ dotenv.config()
 export default function authentication (req: Request, res: Response, next: NextFunction){
 
     const token = req.cookies.token
-    console.log(token)
+    // console.log(token)
 
     const userId = jwt.verify(token, process.env.JWT_KEY as string)
-    console.log(userId)
+    // console.log(userId)
 
     if(userId){
         req.body.userId = userId
