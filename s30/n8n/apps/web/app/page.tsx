@@ -66,11 +66,11 @@ export default function Home() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-28 px-6 bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 text-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,0,0,0.4),transparent_70%)]"></div>
+        <section className="py-28 px-6 bg-gradient-to-r from-[#1a1a1a] via-[#0d0d0d] to-black text-center relative overflow-hidden border-t border-orange-600/30">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,87,34,0.08),transparent_70%)]"></div>
           <div className="relative z-10">
-            <h2 className="text-5xl font-extrabold mb-6">Start Building AI-Powered Workflows</h2>
-            <p className="mb-10 text-lg max-w-2xl mx-auto text-gray-200">
+            <h2 className="text-5xl font-extrabold mb-6 text-orange-400">Start Building AI-Powered Workflows</h2>
+            <p className="mb-10 text-lg max-w-2xl mx-auto text-gray-300">
               Join the open-source community transforming automation with artificial intelligence.
             </p>
             <a
