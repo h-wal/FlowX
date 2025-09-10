@@ -13,7 +13,7 @@ v1Router.use("/signup", signUpRouter)
 v1Router.use("/signin", signInRouter)
 v1Router.use(cookieParser())
 v1Router.use("/dashboard", dashbaordRouter)
-v1Router.use("/createFlow", workFlowRouter)
+v1Router.use("/workflow", workFlowRouter)
 
 v1Router.get("/", (req: Request,res: Response) => {
     res.send("Hello v1 world!!")
