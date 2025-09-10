@@ -18,7 +18,7 @@ async function signUpRouterFunction(req: Request, res: Response){
 
     console.log(foundUser)
     if (foundUser){
-        res.json({
+        res.status(400).json({
             message: "User Already Exists"
         })
     }
@@ -37,7 +37,7 @@ async function signUpRouterFunction(req: Request, res: Response){
         })
 
         if (userCreated){
-            res.json({
+            res.status(200).json({
                 message: "User Created Successfully"
             })
         }

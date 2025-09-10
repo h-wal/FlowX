@@ -27,7 +27,7 @@ export default function Home() {
             </p>
             <div className="flex gap-4 justify-center">
               <a
-                href="/docs"
+                href="/auth/signup"
                 className="px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold shadow-lg hover:scale-105 transition-transform"
               >
                 Get Started Free

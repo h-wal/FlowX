@@ -6,14 +6,22 @@ import authentication from "./middleware/auth.js"
 
 dotenv.config()
 
+interface RequestwithUser{
+    
+}
 
 const dashbaordRouter: Router = express.Router()
 
-async function dashbaordRouterFunction(req: Request, res: Response){
+async function dashbaordRouterFunction(req: any, res: Response){
 
-    const userId = req.body.userId;
-    res.send("Hello"+ userId)
+    if(req.user){
+        const userId = req.user.id;
+        res.json({
+        user: req.user
+    })
 
+    }
+    
 }
 
 dashbaordRouter.get("/", authentication, dashbaordRouterFunction)

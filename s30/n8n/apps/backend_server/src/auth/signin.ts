@@ -12,7 +12,6 @@ const signUpRouter: Router = express.Router()
 async function signUpRouterFunction(req: Request, res: Response){
     
     const email = req.body.email;
-    const password = req.body.password;
     
     const foundUser = await prismaClient.user.findUnique({
         where:{
@@ -34,31 +33,33 @@ async function signUpRouterFunction(req: Request, res: Response){
             auth = await bcrypt.compare(password, hash)
 
         } catch(e){
-            res.send("Error comparing password" + e)
+            res.status(400).send("Error comparing password" + e)
         }
 
         if(auth){
             try{
-                const token = jwt.sign(foundUser.id, process.env.JWT_KEY as string)
+                const token = jwt.sign({id: foundUser.id, email: foundUser.email}, process.env.JWT_KEY as string)
                 console.log(token)
-                res.cookie("token", token).json({
-                    token:token
+                res.cookie("token", token).status(200).json({
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: "lax",
                 })
-                
+
             } catch(e){
-                res.send("error creating token" + e)
+                res.status(500).send("error creating token" + e)
             } 
         }
 
         else{
-            res.json({
+            res.status(401).json({
                 message: "Invalid Password"
             })
         }
     }
 
     else{
-        res.json({
+        res.status(400).json({
             message: "Kindly SignUp"
         })
     }
