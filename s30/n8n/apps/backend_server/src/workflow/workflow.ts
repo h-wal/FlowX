@@ -39,7 +39,6 @@ async function getWorkFlowRouterFunction(req: any, res:Response){
             userId: userId
         }
     })
-
     res.send(data)
 }
 

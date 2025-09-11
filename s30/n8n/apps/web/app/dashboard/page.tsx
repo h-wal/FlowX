@@ -11,7 +11,7 @@ export default function Dashboard() {
     const [email, setEmail] = useState<string | null>()
     const [laoding, setLoading] = useState<string | null>()
     
-    const [selectedMenu, setSelectedMenu] = useState("overview")
+    const [selectedMenu, setSelectedMenu] = useState("Overview")
 
     useEffect(() => {
       axios

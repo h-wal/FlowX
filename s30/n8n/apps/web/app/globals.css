@@ -6,3 +6,32 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+.custom-controls {
+  display: flex;              /* make buttons horizontal */
+  flex-direction: row;        /* default is column */
+  gap: 25px;                   /* spacing between buttons */
+  background: #2e2e2e;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.custom-controls button {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  flex-direction: row;
+  background: #2e2e2e;
+  color: white;
+  border: 1px solid #353333;
+  border-color: #636060;
+  border-radius: 6px;
+  padding: px;
+  transition: background 0.2s;
+}
+
+.custom-controls button:hover {
+  color: #fa491d;
+  border-color: #fa491d;
+  background-color: #2e2e2e;
+}

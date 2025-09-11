@@ -8,6 +8,7 @@ import Credentials from "./credentials/credentials"
 export default function Index(){
 
     const [selectedTab, setSelectedTab] = useState("Workflows")
+    console.log(selectedTab)
 
     return(
         <div className="flex flex-col h-full w-full gap-2">
@@ -16,8 +17,9 @@ export default function Index(){
             </div>
             <div className="text-white">
                 {selectedTab == "Excecutions" ? <Excecutions /> : null} 
-                {selectedTab == "Workflows" ? <WorkFlow /> : null} 
+                {selectedTab == "Workflows" ? <WorkFlow setSelectedTab={setSelectedTab}/> : null} 
                 {selectedTab == "Credentials" ? <Credentials /> : null} 
+                {selectedTab == "Workflow"}
             </div>
         </div>
     )

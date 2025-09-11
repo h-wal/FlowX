@@ -1,4 +1,5 @@
 import { dropDownMenu } from "../../../icons/dropdownmenu"
+import Index from "../index"
 
 export default function OverViewPanel(){
     return(
@@ -21,6 +22,7 @@ export default function OverViewPanel(){
                     <div className="text-gray-400 text-lg">
                         All the workflows, credentials and executions you have access to
                     </div> 
+                    <Index></Index>
                 </div>
             </div>
         </div>
