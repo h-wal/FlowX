@@ -8,17 +8,17 @@ html, body {
 }
 
 .custom-controls {
-  display: flex;              /* make buttons horizontal */
-  flex-direction: row;        /* default is column */
-  gap: 25px;                   /* spacing between buttons */
+  display: flex !important;              /* make buttons horizontal */
+  flex-direction: row !important;        /* default is column */
+  gap: 20px;                   /* spacing between buttons */
   background: #2e2e2e;
   padding: 6px;
   border-radius: 8px;
 }
 
 .custom-controls button {
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
   display: flex;
   flex-direction: row;
   background: #2e2e2e;
@@ -26,7 +26,7 @@ html, body {
   border: 1px solid #353333;
   border-color: #636060;
   border-radius: 6px;
-  padding: px;
+  padding: 2px;
   transition: background 0.2s;
 }
 
@@ -34,4 +34,80 @@ html, body {
   color: #fa491d;
   border-color: #fa491d;
   background-color: #2e2e2e;
+  transition: color 0.5s;
+  transition: border-color 0.5s;
 }
+
+.second-controls {
+  display: flex !important;
+  flex-direction: column !important;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  background: #2e2e2e;
+  padding: 8px;
+  border-radius: 8px;
+  z-index: 10; /* make sure it’s above the canvas */
+}
+
+.second-controls button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #636060;
+  border-radius: 6px;
+  background: #2e2e2e;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.second-controls button:hover {
+  color: #fa491d;
+  border-color: #fa491d;
+  background-color: #3a3a3a;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0); /* dimmed background */
+  z-index: 19;
+  display: flex;
+  justify-content: flex-end; /* align panel to right */
+}
+
+.right-panel {
+  width: 30%;
+  height: 100%;
+  background: #3a3a3a;
+  color: white;
+  padding: 20px;
+  border-left: 1px solid #6a7282;
+  animation: slideIn 0.3s ease forwards;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 20; /* above overlay */
+}
+
+.panel-btn{
+  width: full;
+  height: 5%
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+
+
+

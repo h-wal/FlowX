@@ -2,7 +2,10 @@ import { useState, useCallback, useRef } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, Controls, MiniMap, useNodesState, useEdgesState, Connection } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { TextUpdaterNode } from './customNodes/textupdater';
- 
+import { Node } from "@xyflow/react";
+import PanelButton from './ui/rightpanelbutton';
+import { pointer } from './icons/pointer';
+import { webhook } from './icons/webhook';
 
 const nodeTypes = {
   textUpdater: TextUpdaterNode
@@ -13,15 +16,7 @@ const initialNodes = [
     type: 'textUpdater',
     position: { x: 0, y: 0 }, 
     data: { label: 'Node 1' } 
-  },
-  { id: '2', 
-    position: { x: 100, y: 100 }, 
-    data: { label: 'Node 2' } 
-  },
-  { id: '3', 
-    position: { x: 200, y: 200 }, 
-    data: { label: 'Node 3' } 
-  },
+  }
 ];
 
 const initialEdges = [
@@ -37,8 +32,12 @@ export default function RFlow() {
   const [edges, setEdges] = useState(initialEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [showPanel, setShowPanel] = useState(false);
 
-    const handleMoveStart = () => {
+  const togglePanel = () => setShowPanel((prev) => !prev);
+
+
+  const handleMoveStart = () => {
     setShowMiniMap(true);
 
     // clear any pending hide timers
@@ -64,6 +63,15 @@ export default function RFlow() {
     (params: any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
     [],
   );
+
+  const addNode = useCallback(() => {
+    const newNode: Node = {
+      id: `${nodes.length + 1}`,
+      position: { x: Math.random() * 400, y: Math.random() * 400 },
+      data: { label: `Node ${nodes.length + 1}` },
+    };
+    setNodes((nds: any) => [...nds, newNode]);
+  }, [nodes]);
  
   return (
       <ReactFlow 
@@ -71,7 +79,6 @@ export default function RFlow() {
         panOnDrag={false}
         selectionOnDrag={true}
         panOnScroll={true}
-        // colorMode='dark'
         nodes={nodes} 
         edges={edges}
         nodeTypes={nodeTypes}
@@ -96,6 +103,21 @@ export default function RFlow() {
           transition: "opacity 0.5s ease-in-out",
           pointerEvents: "none",  
         }} />}
+        {showPanel && (
+          <div className="overlay" onClick={() => setShowPanel(false)}>
+            <div className="right-panel" onClick={(e) => e.stopPropagation()}>
+              <div className="p-2 text-xl">Add Nodes to the Work Flow :</div>
+              <PanelButton icon={pointer} title="Trigger manually" description='Runs the flow on clicking a button on n8n'></PanelButton>
+              <PanelButton icon={webhook} title='On webhook call' description='Runs the flow on receiving a http request'></PanelButton>
+            </div>
+          </div>
+        )}
+        <div className="second-controls">
+          <button onClick={togglePanel}>➕</button>
+          {/* <button onClick={() => customAction("Action 1")}>⚡</button> */}
+          {/* <button onClick={() => customAction("Action 2")}>🔄</button>
+          <button onClick={() => customAction("Action 3")}>🗑️</button> */}
+        </div>
       </ReactFlow> 
   );
 }
