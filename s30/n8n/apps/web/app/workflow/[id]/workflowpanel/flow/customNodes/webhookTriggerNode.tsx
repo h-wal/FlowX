@@ -1,30 +1,31 @@
 "use client"
 import { Handle, Position, useEdges } from "@xyflow/react"
-import { useState, useEffect } from "react"
-import { Settings, Trash2, Power, Play, MousePointer2Icon, Zap, Plus } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { Trash2, Power, Play, Zap, Plus } from "lucide-react"
+import { WebhookIcon } from "lucide-react"
 
 interface NodeProps {
   icon?: any
   onAdd?: (id: string) => void // callback for adding new node
   id: string
-  
 }
 
-export default function SquareNode(data: NodeProps) {
+export default function WebHookNode(data: NodeProps) {
   const [showControls, setShowControls] = useState(false)
-  const [showDummy, setShowDummy] = useState(true) // dummy node visible until replaced
-  const [isConnected, setIsConnected] = useState(false)
   const edges = useEdges()
+  const [isConnected, setIsConnected] = useState(false)
+
+  const nodeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-      const connected = edges.some(
-        (e) => e.source === data.id || e.target === data.id
-      )
-      setIsConnected(connected)
-    }, [edges, data.id])
+    const connected = edges.some(
+      (e) => e.source === data.id || e.target === data.id
+    )
+    setIsConnected(connected)
+  }, [edges, data.id])
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center relative" ref={nodeRef}>
       <div
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
@@ -55,24 +56,27 @@ export default function SquareNode(data: NodeProps) {
 
         {/* Icon */}
         <div className="text-white">
-          <MousePointer2Icon size={48} />
+          <WebhookIcon size={48} />
         </div>
 
-        {/* Handles */}
-        <Handle type="source" position={Position.Right} className="!bg-white !w-4 !h-4" />
+        {/* Handle */}
+        <Handle
+          type="source"
+          position={Position.Right}
+          className="!bg-white !w-4 !h-4"
+        />
       </div>
 
       {/* Labels */}
-      <div className="mt-2">When clicking</div>
-      <div>"Execute Workflow"</div>
+      <div className="mt-2">Webhook</div>
 
-      {/* Dummy node on the right */}
+      {/* Dummy button + connecting line */}
       {!isConnected && (
         <>
           {/* SVG line from node source to dummy */}
           <svg
             className="absolute pointer-events-none"
-            style={{ left: "120px", top: "31%", width: "40px", height: "2px" }}
+            style={{ left: "96px", top: "36%", width: "40px", height: "2px" }}
           >
             <line
               x1="0"
@@ -87,7 +91,7 @@ export default function SquareNode(data: NodeProps) {
           {/* Dummy button */}
           <button
             onClick={() => data.onAdd?.(data.id)}
-            className="absolute left-[160px] top-[31%] -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[#2e2e2e] border border-gray-600 text-white rounded-md shadow cursor-pointer hover:bg-[#3a3a3a]"
+            className="absolute left-[136px] top-[37%] -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[#2e2e2e] border border-gray-600 text-white rounded-md shadow cursor-pointer hover:bg-[#3a3a3a]"
           >
             <Plus size={18} />
           </button>
