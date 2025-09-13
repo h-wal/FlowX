@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import Header from "./header/header"
 import Flow from "./flow/flow"
 
+
 interface workFlowPanelProps{
     params: any
 }
@@ -13,6 +14,7 @@ export default function WorkFlowPanel(props: workFlowPanelProps){
 
     const [workFlow, setWorkFlow] = useState<any>({})
     const id = props.params.id
+    const [saved, setSaved] = useState(true)
 
     useEffect(() => {
         
@@ -31,8 +33,8 @@ export default function WorkFlowPanel(props: workFlowPanelProps){
     
     return (
         <div className="flex flex-col h-screen w-[85%]">
-            <Header workFlow={workFlow}></Header>
-            <Flow workFlow={workFlow}></Flow>
+            <Header saved={saved} setSaved={setSaved} workFlow={workFlow}></Header>
+            <Flow saved={saved} setSaved={setSaved} workFlow={workFlow}></Flow>
         </div>
     )
 }

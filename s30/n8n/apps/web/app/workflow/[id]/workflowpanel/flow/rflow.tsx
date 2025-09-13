@@ -1,4 +1,14 @@
 "use client";
+interface RflowProps{
+  saved: any
+  setSaved: any
+}
+
+interface innerRflowprops{
+  saved: any
+  setSaved: any
+}
+
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   useReactFlow,
@@ -37,8 +47,12 @@ const nodeTypes = {
 const initialNodes: any = [];
 const initialEdges: any = [];
 
-function RFlowInner() {
-  const reactFlowInstance = useReactFlow(); // ✅ now inside provider
+function RFlowInner(props: innerRflowprops) {
+
+  const saved = props.saved
+  const setSaved = props.setSaved
+
+  const reactFlowInstance = useReactFlow();
 
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
@@ -46,6 +60,7 @@ function RFlowInner() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showPanel, setShowPanel] = useState(false);
   const [triggerAdded, setTriggerAdded] = useState(false);
+  const { toObject } = useReactFlow();
 
   const togglePanel = () => setShowPanel((prev) => !prev);
 
@@ -137,6 +152,13 @@ function RFlowInner() {
     []
   );
 
+  const handleSave = () => {
+    const flow = toObject(); 
+    console.log("hi there")
+    console.log(flow); // snapshot of nodes, edges, viewport
+    // send `flow` to backend
+  };
+
   useEffect(() => {
     reactFlowInstance.fitView({ padding: 0.2 });
   }, [reactFlowInstance]);
@@ -176,6 +198,7 @@ function RFlowInner() {
           }}
         />
       )}
+
 
       {!triggerAdded && showPanel && (
         <div id="TriggerPanel" className="overlay" onClick={() => setShowPanel(false)}>
@@ -230,10 +253,10 @@ function RFlowInner() {
   );
 }
 
-export default function RFlow() {
+export default function RFlow(props: RflowProps) {
   return (
     <ReactFlowProvider>
-      <RFlowInner />
+      <RFlowInner saved={props.saved} setSaved={props.setSaved}/>
     </ReactFlowProvider>
   );
 }

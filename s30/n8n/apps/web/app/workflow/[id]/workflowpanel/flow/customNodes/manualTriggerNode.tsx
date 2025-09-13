@@ -59,7 +59,7 @@ export default function SquareNode(data: NodeProps) {
         </div>
 
         {/* Handles */}
-        <Handle type="source" position={Position.Right} className="!bg-white !w-4 !h-4" />
+        <Handle type="source"  position={Position.Right} className="!bg-white !w-4 !h-4" />
       </div>
 
       {/* Labels */}
