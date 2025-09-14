@@ -1,12 +1,7 @@
 "use client";
-interface RflowProps{
-  saved: any
-  setSaved: any
-}
 
-interface innerRflowprops{
-  saved: any
-  setSaved: any
+interface rflowInnerProps{
+  workFlow: any
 }
 
 import { useState, useCallback, useRef, useEffect } from "react";
@@ -34,6 +29,9 @@ import { Mail } from "lucide-react";
 import TelegramNode from "./customNodes/telegramNode";
 import EmailNode from "./customNodes/EmailNode";
 import AiAgentNode from "./customNodes/aiAgentNode";
+import { useSaveStore } from "../stores/saveStore";
+import axios from "axios";
+import { PiRowsPlusBottom } from "react-icons/pi";
 
 const nodeTypes = {
   textUpdater: TextUpdaterNode,
@@ -47,13 +45,13 @@ const nodeTypes = {
 const initialNodes: any = [];
 const initialEdges: any = [];
 
-function RFlowInner(props: innerRflowprops) {
+function RFlowInner(props: rflowInnerProps) {
 
-  const saved = props.saved
-  const setSaved = props.setSaved
+  const {triggerSave, setTriggerSave, saved, setSaved, saving, setSaving} = useSaveStore()
 
   const reactFlowInstance = useReactFlow();
 
+  const [flowData, setFlowData] = useState("");
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
@@ -75,18 +73,18 @@ function RFlowInner(props: innerRflowprops) {
     }, 2000);
   };
 
-  const onNodesChange = useCallback(
-    (changes: any) => setNodes((nds: any) => applyNodeChanges(changes, nds)),
-    []
-  );
+  const onNodesChange = useCallback((changes: any) => {
+    setNodes((nds: any) => applyNodeChanges(changes, nds));
+    setSaved(false);
+  }, [setSaved])
+
   const onEdgesChange = useCallback(
-    (changes: any) => setEdges((eds: any) => applyEdgeChanges(changes, eds)),
-    []
-  );
+    (changes: any) => { setEdges((eds: any) => applyEdgeChanges(changes, eds)); setSaved(false)}, 
+    [setSaved]);
+  
   const onConnect = useCallback(
-    (params: any) => setEdges((eds: any) => addEdge(params, eds)),
-    []
-  );
+    (params: any) => { setEdges((eds: any) => addEdge(params, eds)); setSaved(false);},
+    [setSaved]);
 
   const addTriggerNode = useCallback(() => {
     const newNode = {
@@ -152,16 +150,60 @@ function RFlowInner(props: innerRflowprops) {
     []
   );
 
-  const handleSave = () => {
-    const flow = toObject(); 
-    console.log("hi there")
-    console.log(flow); // snapshot of nodes, edges, viewport
-    // send `flow` to backend
-  };
+  const handleSave = async () => {
+  const flow = JSON.stringify(toObject());
+  console.log(flow);
+
+  try {
+    setSaving(true);
+    const res = await axios.put("http://localhost:3030/api/v1/workflow", {
+      workFlowId: props.workFlow.id,
+      flow: flow
+    }, { withCredentials: true });
+
+    if (res) {
+      console.log("Saved Successfully");
+      setSaved(true);   // ✅ reset saved flag
+      setSaving(false);
+      setTriggerSave(false)
+    }
+  } catch (e) {
+    alert("Error saving");
+    setTriggerSave(false)
+    setSaving(false);
+    setSaved(false); // stay dirty
+  }
+};
+
 
   useEffect(() => {
     reactFlowInstance.fitView({ padding: 0.2 });
   }, [reactFlowInstance]);
+
+  useEffect(() => {
+    if(triggerSave){
+      handleSave()
+    }
+  }, [triggerSave])
+
+  useEffect(() => {
+    if (props.workFlow?.flow) {
+      try {
+        const parsed = JSON.parse(props.workFlow.flow);
+        setNodes(parsed.nodes || []);
+        setEdges(parsed.edges || []);
+
+        if (parsed.viewport) {
+          reactFlowInstance.setViewport(parsed.viewport);
+        }
+        
+        setTriggerAdded(true)
+      } catch (err) {
+        console.error("Failed to parse flow:", err);
+      }
+    }
+  }, [props.workFlow, reactFlowInstance]);
+
 
   return (
     <ReactFlow
@@ -253,10 +295,14 @@ function RFlowInner(props: innerRflowprops) {
   );
 }
 
-export default function RFlow(props: RflowProps) {
+interface rflowprops{
+  workFlow: any
+}
+
+export default function RFlow(props: rflowprops) {
   return (
     <ReactFlowProvider>
-      <RFlowInner saved={props.saved} setSaved={props.setSaved}/>
+      <RFlowInner workFlow={props.workFlow}/>
     </ReactFlowProvider>
   );
 }

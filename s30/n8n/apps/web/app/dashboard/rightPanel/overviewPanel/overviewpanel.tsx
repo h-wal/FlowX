@@ -1,4 +1,4 @@
-import { dropDownMenu } from "../../../icons/dropdownmenu"
+import CreateWorkFlowButton from "../buttons/createWorkFlow"
 import Index from "../index"
 
 export default function OverViewPanel(){
@@ -10,14 +10,8 @@ export default function OverViewPanel(){
                         <div className="text-xl text-white">
                             Overview
                         </div>
-                        <div className="bg-[#fe6f5b] text-white flex flex-row rounded-md">
-                            <div className="p-1 px-2 border-r border-white hover:bg-orange-700 hover:rounded-md cursor-pointer">
-                                Create WorkFlow
-                            </div>
-                            <div className="p-2 px-4 ">
-                                {dropDownMenu}
-                            </div>   
-                        </div>  
+                        <CreateWorkFlowButton></CreateWorkFlowButton>
+
                     </div>
                     <div className="text-gray-400 text-md">
                         All the workflows, credentials and executions you have access to

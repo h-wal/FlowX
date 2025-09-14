@@ -33,8 +33,8 @@ export default function WorkFlowPanel(props: workFlowPanelProps){
     
     return (
         <div className="flex flex-col h-screen w-[85%]">
-            <Header saved={saved} setSaved={setSaved} workFlow={workFlow}></Header>
-            <Flow saved={saved} setSaved={setSaved} workFlow={workFlow}></Flow>
+            <Header workFlow={workFlow}></Header>
+            <Flow workFlow={workFlow}></Flow>
         </div>
     )
 }

@@ -1,25 +1,19 @@
 import { dropDownMenu } from "../../../icons/dropdownmenu"
+import CreateWorkFlowButton from "../buttons/createWorkFlow"
 import Index from "../index"
 
 export default function PersonalPanel(){
     return(
             <div className="h-screen flex flex-col">
                 <div className="bg-[#2e2e2e] h-full w-full">
-                    <div className="mx-15 my-10">
+                    <div className="mx-10 my-5">
                         <div className="flex flex-row justify-between">
-                            <div className="text-3xl text-white">
+                            <div className="text-xl text-white">
                                 Personal
                             </div>
-                            <div className="bg-[#fe6f5b] text-white flex flex-row rounded-md">
-                                <div className="p-2 px-4 border-r border-white hover:bg-orange-700 hover:rounded-md cursor-pointer">
-                                    Create WorkFlow
-                                </div>
-                                <div className="p-2 px-4  hover:bg-orange-700 hover:rounded-md cursor-pointer">
-                                    {dropDownMenu}
-                                </div>   
-                            </div>  
+                            <CreateWorkFlowButton></CreateWorkFlowButton>
                         </div>
-                        <div className="text-gray-400 text-lg">
+                        <div className="text-gray-400 text-md">
                             Workflows and credentials owned by you
                         </div> 
                         <Index></Index>

@@ -24,8 +24,7 @@ async function postWorkFlowRouterFunction(req: any, res: Response){
             userId: String(user.id),
             title: generateRandomTitle(),
             enabled: false,
-            nodes: "{}",
-            connections: "{}" 
+            flow: ""
         }
     })
 
@@ -44,25 +43,24 @@ async function getWorkFlowRouterFunction(req: any, res:Response){
 
 async function putWorkFlowRouterFunction(req:any , res: Response){
 
+    console.log("putreqrcvd")
     const userId = req.user.id
     const workflowId = req.body.workFlowId
-    const title = req.body.title
     const enabled = req.body.enabled
-    const nodes = req.body.nodes
-    const connections = req.body.connections
+    const flow = (req.body.flow)
+    console.log(flow)
 
     const updatedData = await prismaClient.workflow.update({
         where:{
             id: workflowId
         },
         data: {
-        title,
-        enabled,
-        nodes,
-        connections,
+        enabled: enabled,
+        flow: flow
       },
     })
 
+    console.log(updatedData)
     res.send(updatedData)
 
 }

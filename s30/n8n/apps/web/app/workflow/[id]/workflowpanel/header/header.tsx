@@ -1,16 +1,17 @@
 import { useState } from "react"
 import personalIcon from "../../../../icons/personalIcon"
+import { useSaveStore } from "../stores/saveStore"
 
 interface headerprops{
-    setSaved: any
-    saved: any
     workFlow: any
 }
 
 export default function Header(props: headerprops) {
 
+    const {triggerSave, setTriggerSave, saving, saved, setSaved} = useSaveStore();
+
     const saveButtonPressed = () => {
-        props.setSaved(false)
+        setTriggerSave(true)
     }
 
     
@@ -32,8 +33,8 @@ export default function Header(props: headerprops) {
                     </div>
                 </div>
                 <div>
-                    <div onClick={saveButtonPressed} className={`text-xs ${props.saved ? "bg-[#ea6857] p-1.5 px-4 rounded-md text-white cursor-pointer hover:bg-[#ff6843]" : "text-md"}`}>
-                        {props.saved ? "Save" : "Saved"}
+                    <div onClick={saveButtonPressed} className={`text-xs ${!saved ? "bg-[#ea6857] p-1.5 px-4 rounded-md text-white cursor-pointer hover:bg-[#ff6843]" : "text-md"}`}>
+                        {saved ? "Saved" : "Save"}
                     </div>
                 </div>
             </div>

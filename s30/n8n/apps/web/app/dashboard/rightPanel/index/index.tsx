@@ -11,8 +11,8 @@ export default function Index(){
     console.log(selectedTab)
 
     return(
-        <div className="flex flex-col h-full w-full gap-2">
-            <div className="my-5">
+        <div className="flex flex-col h-full w-full">
+            <div className="my-1">
                 <TopPanel selectedTab={selectedTab} setSelectedTab={setSelectedTab}></TopPanel>
             </div>
             <div className="text-white">

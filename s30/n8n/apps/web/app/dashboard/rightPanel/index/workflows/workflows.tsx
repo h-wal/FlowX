@@ -29,11 +29,7 @@ export default function WorkFlow(props: workflowprops){
     }
         
     return(
-        <div>
-            <div>
-                
-            </div>
-
+        <div className="mt-5">
             <div className="flex flex-col gap-3">
                 {Array.isArray(workFlows) && workFlows.map((flow: any) => (
                     <WorkFlowtabs 
