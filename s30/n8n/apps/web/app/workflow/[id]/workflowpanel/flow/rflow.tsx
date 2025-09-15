@@ -31,7 +31,9 @@ import EmailNode from "./customNodes/EmailNode";
 import AiAgentNode from "./customNodes/aiAgentNode";
 import { useSaveStore } from "../stores/saveStore";
 import axios from "axios";
-import { PiRowsPlusBottom } from "react-icons/pi";
+import { useTriggerStore } from "../stores/triggerStore";
+import ExcecuteFlowButton from "./buttons/excecuteFlowButton";
+
 
 const nodeTypes = {
   textUpdater: TextUpdaterNode,
@@ -48,10 +50,10 @@ const initialEdges: any = [];
 function RFlowInner(props: rflowInnerProps) {
 
   const {triggerSave, setTriggerSave, saved, setSaved, saving, setSaving} = useSaveStore()
+  const {excecuting, setExcecuting, triggerPressed, setTriggerPressed} = useTriggerStore()
 
   const reactFlowInstance = useReactFlow();
 
-  const [flowData, setFlowData] = useState("");
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
@@ -151,30 +153,46 @@ function RFlowInner(props: rflowInnerProps) {
   );
 
   const handleSave = async () => {
-  const flow = JSON.stringify(toObject());
-  console.log(flow);
+    const flow = JSON.stringify(toObject());
+    console.log(flow);
 
-  try {
-    setSaving(true);
-    const res = await axios.put("http://localhost:3030/api/v1/workflow", {
-      workFlowId: props.workFlow.id,
-      flow: flow
-    }, { withCredentials: true });
+    try {
+      setSaving(true);
+      const res = await axios.put("http://localhost:3030/api/v1/workflow", {
+        workFlowId: props.workFlow.id,
+        flow: flow
+      }, { withCredentials: true });
 
-    if (res) {
-      console.log("Saved Successfully");
-      setSaved(true);   // ✅ reset saved flag
-      setSaving(false);
+      if (res) {
+        console.log("Saved Successfully");
+        setSaved(true);   // ✅ reset saved flag
+        setSaving(false);
+        setTriggerSave(false)
+      }
+    } catch (e) {
+      alert("Error saving");
       setTriggerSave(false)
+      setSaving(false);
+      setSaved(false); // stay dirty
     }
-  } catch (e) {
-    alert("Error saving");
-    setTriggerSave(false)
-    setSaving(false);
-    setSaved(false); // stay dirty
-  }
-};
+  };
 
+  const excecuteWorkflow = async () => {
+    try{
+      console.log("workflow Excecution called")
+
+      setExcecuting(true);
+      axios.post("http://localhost:3030/api/v1/excecution", {
+        workFlowId: props.workFlow.id
+      },{
+        withCredentials: true
+      }) 
+
+      setTimeout(() => setTriggerPressed(false), 500)
+    } catch{
+      console.log("Error fetching workflow")
+    }
+  }
 
   useEffect(() => {
     reactFlowInstance.fitView({ padding: 0.2 });
@@ -204,6 +222,11 @@ function RFlowInner(props: rflowInnerProps) {
     }
   }, [props.workFlow, reactFlowInstance]);
 
+  useEffect(() => {
+    if(triggerPressed && !saving){
+      excecuteWorkflow()
+    }
+  }, [triggerPressed, saving])
 
   return (
     <ReactFlow
@@ -288,10 +311,12 @@ function RFlowInner(props: rflowInnerProps) {
         </div>
       )}
 
+      <ExcecuteFlowButton></ExcecuteFlowButton>
+
       <div className="second-controls">
         <button onClick={togglePanel}>➕</button>
       </div>
-    </ReactFlow>
+      </ReactFlow>
   );
 }
 

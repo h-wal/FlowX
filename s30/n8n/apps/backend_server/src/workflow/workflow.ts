@@ -46,6 +46,7 @@ async function putWorkFlowRouterFunction(req:any , res: Response){
     console.log("putreqrcvd")
     const userId = req.user.id
     const workflowId = req.body.workFlowId
+    const title = req.body.title
     const enabled = req.body.enabled
     const flow = (req.body.flow)
     console.log(flow)
@@ -56,7 +57,8 @@ async function putWorkFlowRouterFunction(req:any , res: Response){
         },
         data: {
         enabled: enabled,
-        flow: flow
+        flow: flow,
+        title: title
       },
     })
 

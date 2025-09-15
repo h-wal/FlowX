@@ -35,6 +35,11 @@ export default function WorkFlowPanel(props: workFlowPanelProps){
         <div className="flex flex-col h-screen w-[85%]">
             <Header workFlow={workFlow}></Header>
             <Flow workFlow={workFlow}></Flow>
+            <div id="footer" className="bg-[#2e2e2e] border-t border-gray-500">
+                <div className="text-xs p-2 text-white">
+                    Logs
+                </div>
+            </div>
         </div>
     )
 }

@@ -10,7 +10,6 @@ interface NodeProps {
   icon?: any
   onAdd?: (id: string) => void // callback for adding new node
   id: string
-  
 }
 
 export default function AiAgentNode(data: NodeProps) {
@@ -31,7 +30,7 @@ export default function AiAgentNode(data: NodeProps) {
       <div
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
-        className="relative w-24 h-24 bg-[#3e3e3e] border-2 border-gray-500 rounded-md shadow shadow-gray-500 flex items-center justify-center"
+        className="relative w-48 h-24 bg-[#3e3e3e] border-2 border-gray-500 rounded-md shadow shadow-gray-500 flex items-center justify-center"
       >
 
         {/* Top control panel */}
@@ -51,7 +50,14 @@ export default function AiAgentNode(data: NodeProps) {
 
         {/* Icon */}
         <div className="text-white">
-            <FaRobot className="h-10 w-10 "/>
+            <div className="flex flex-row justify-center items-center gap-4">
+              <div>
+              <FaRobot className="h-10 w-10 "/>
+              </div>
+              <div>
+                AI Agent
+              </div>
+            </div>
         </div>
 
         {/* Handles */}
@@ -67,10 +73,34 @@ export default function AiAgentNode(data: NodeProps) {
             className="!bg-white !w-2 !h-4 !rounded-none" 
         />
 
+        <Handle 
+            type="source" 
+            position={Position.Bottom} 
+            className="!bg-white !w-3 !h-3 !rounded-none !rotate-45 mt-200" 
+            style={{ bottom:"-7px", left:"150px"}}
+        >
+
+          <svg
+            className="absolute pointer-events-none rotate-45"
+            style={{ left: "0px", top: "18px", width: "40px", height: "2px" }}
+          >
+            <line
+              x1="0"
+              y1="0"
+              x2="220"
+              y2="0"
+              stroke="#fff"
+              strokeWidth="4"
+            />
+          </svg>
+
+          <div className="text-xs rotate-315 px-0.5 py-4 ">
+            Tools
+          </div>
+        </Handle>
     </div>
 
       {/* Labels */}
-      <div className="mt-2">AI Agent Action</div>
 
       {/* Dummy node on the right */}
       {!isConnected && (
