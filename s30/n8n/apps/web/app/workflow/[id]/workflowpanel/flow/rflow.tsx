@@ -33,6 +33,8 @@ import { useSaveStore } from "../stores/saveStore";
 import axios from "axios";
 import { useTriggerStore } from "../stores/triggerStore";
 import ExcecuteFlowButton from "./buttons/excecuteFlowButton";
+import { usePanelStore } from "../../stores/dataPanel";
+
 
 
 const nodeTypes = {
@@ -51,6 +53,7 @@ function RFlowInner(props: rflowInnerProps) {
 
   const {triggerSave, setTriggerSave, saved, setSaved, saving, setSaving} = useSaveStore()
   const {excecuting, setExcecuting, triggerPressed, setTriggerPressed} = useTriggerStore()
+  const {panelOpen, setPanelOpen} = usePanelStore()
 
   const reactFlowInstance = useReactFlow();
 

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import LeftWorkFlowPanel from "./leftworkflowpanel/leftworkflowpanel"
 import WorkFlowPanel from "./workflowpanel/workflowpanel"
+import { usePanelStore } from "./stores/dataPanel"
+import OverlayPanel from "./overlayPanel/overlayPanel"
 
 export default function WorkFlow(){
     
@@ -11,6 +13,7 @@ export default function WorkFlow(){
     const [workFlow , setWorkFlow] = useState<any>({})
     const params = useParams() 
     const id = params.id
+    const {panelOpen, setPanelOpen} = usePanelStore()
 
     useEffect(() => {
 
@@ -26,10 +29,12 @@ export default function WorkFlow(){
     }, [])
 
     return(
-        <div className="flex flex-row h-screen w-screen">
-            <LeftWorkFlowPanel setSelectedMenu={setSelectedMenu} ></LeftWorkFlowPanel>
-            <WorkFlowPanel params={params}></WorkFlowPanel>
+        <div>
+            {panelOpen && <OverlayPanel />}
+            <div className="flex flex-row h-screen w-screen">
+                <LeftWorkFlowPanel setSelectedMenu={setSelectedMenu} ></LeftWorkFlowPanel>
+                <WorkFlowPanel params={params}></WorkFlowPanel>
+            </div>
         </div>
-        
     )
 }
