@@ -3,6 +3,7 @@ import { Handle, Position, useEdges } from "@xyflow/react"
 import { useState, useEffect } from "react"
 import { Settings, Trash2, Power, Play, MousePointer2Icon, Zap, Plus } from "lucide-react"
 import { MdEmail } from "react-icons/md"
+import { SourceHandle } from "./commonFeatures/sourceHandle"
 
 interface NodeProps {
   icon?: any
@@ -11,18 +12,8 @@ interface NodeProps {
   
 }
 
-export default function EmailNode(data: NodeProps) {
+export default function EmailNode(props: NodeProps) {
   const [showControls, setShowControls] = useState(false)
-  const [showDummy, setShowDummy] = useState(true) // dummy node visible until replaced
-  const [isConnected, setIsConnected] = useState(false)
-    const edges = useEdges()
-  
-    useEffect(() => {
-        const connected = edges.some(
-          (e) => e.source === data.id || e.target === data.id
-        )
-        setIsConnected(connected)
-      }, [edges, data.id])
 
   return (
     <div className="flex flex-col items-center">
@@ -47,12 +38,10 @@ export default function EmailNode(data: NodeProps) {
           </div>
         )}
 
-        {/* Icon */}
-        <div className="text-white">
+        <div id="icon"className="text-white">
           <MdEmail size={48} />
         </div>
 
-        {/* Handles */}
         <Handle 
             type="source" 
             position={Position.Right} 
@@ -65,38 +54,11 @@ export default function EmailNode(data: NodeProps) {
             className="!bg-white !w-2 !h-4 !rounded-none" 
         />
 
+        <SourceHandle nodeId={props.id}></SourceHandle>
       </div>
 
-      {/* Labels */}
       <div className="mt-2">Email Action</div>
 
-      {/* Dummy node on the right */}
-      {!isConnected && (
-              <>
-                {/* SVG line from node source to dummy */}
-                <svg
-                  className="absolute pointer-events-none"
-                  style={{ left: "101px", top: "37%", width: "40px", height: "2px" }}
-                >
-                  <line
-                    x1="0"
-                    y1="0"
-                    x2="200"
-                    y2="0"
-                    stroke="#fff"
-                    strokeWidth="4"
-                  />
-                </svg>
-      
-                {/* Dummy button */}
-                <button
-                  onClick={() => data.onAdd?.(data.id)}
-                  className="absolute left-[140px] top-[37%] -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[#2e2e2e] border border-gray-600 text-white rounded-md shadow cursor-pointer hover:bg-[#3a3a3a]"
-                >
-                  <Plus size={18} />
-                </button>
-              </>
-            )}
     </div>
   )
 }

@@ -4,7 +4,8 @@ import { useState, useEffect } from "react"
 import { Settings, Trash2, Power, Play, MousePointer2Icon, Zap, Plus } from "lucide-react"
 import { FaRobot, FaTelegramPlane } from "react-icons/fa";
 import { BsRobot } from "react-icons/bs";
-
+import { motion, AnimatePresence } from "framer-motion";
+import { SourceHandle } from "./commonFeatures/sourceHandle";
 
 interface NodeProps {
   icon?: any
@@ -12,7 +13,7 @@ interface NodeProps {
   id: string
 }
 
-export default function AiAgentNode(data: NodeProps) {
+export default function AiAgentNode(props: NodeProps) {
   const [showControls, setShowControls] = useState(false)
   const [showDummy, setShowDummy] = useState(true) // dummy node visible until replaced
   const [isConnected, setIsConnected] = useState(false)
@@ -20,10 +21,10 @@ export default function AiAgentNode(data: NodeProps) {
   
     useEffect(() => {
         const connected = edges.some(
-          (e) => e.source === data.id || e.target === data.id
+          (e) => e.source === props.id || e.target === props.id
         )
         setIsConnected(connected)
-      }, [edges, data.id])
+      }, [edges, props.id])
 
   return (
     <div className="flex flex-col items-center">
@@ -48,8 +49,7 @@ export default function AiAgentNode(data: NodeProps) {
           </div>
         )}
 
-        {/* Icon */}
-        <div className="text-white">
+        <div id="icon" className="text-white">
             <div className="flex flex-row justify-center items-center gap-4">
               <div>
               <FaRobot className="h-10 w-10 "/>
@@ -60,12 +60,7 @@ export default function AiAgentNode(data: NodeProps) {
             </div>
         </div>
 
-        {/* Handles */}
-        <Handle 
-            type="source" 
-            position={Position.Right} 
-            className="!bg-white !w-4 !h-4" 
-        />
+        <SourceHandle nodeId={props.id}></SourceHandle>
 
         <Handle 
             type="target" 
@@ -97,38 +92,10 @@ export default function AiAgentNode(data: NodeProps) {
           <div className="text-xs rotate-315 px-0.5 py-4 ">
             Tools
           </div>
+          
         </Handle>
+
     </div>
-
-      {/* Labels */}
-
-      {/* Dummy node on the right */}
-      {!isConnected && (
-        <>
-          {/* SVG line from node source to dummy */}
-          <svg
-            className="absolute pointer-events-none"
-            style={{ left: "110px", top: "36%", width: "40px", height: "2px" }}
-          >
-            <line
-              x1="0"
-              y1="0"
-              x2="200"
-              y2="0"
-              stroke="#fff"
-              strokeWidth="4"
-            />
-          </svg>
-
-          {/* Dummy button */}
-          <button
-            onClick={() => data.onAdd?.(data.id)}
-            className="absolute left-[150px] top-[36%] -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-[#2e2e2e] border border-gray-600 text-white rounded-md shadow cursor-pointer hover:bg-[#3a3a3a]"
-          >
-            <Plus size={18} />
-          </button>
-        </>
-      )}
     </div>
   )
 }
