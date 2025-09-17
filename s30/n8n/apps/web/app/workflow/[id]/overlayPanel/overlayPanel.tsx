@@ -21,7 +21,7 @@ export default function OverlayPanel(){
                         <div className="w-4/11 h-9/11 bg-[#2e2e2e] mt-6 rounded-l-md p-4">
                             Input
                         </div>
-                        <div className="w-3/11 h-11/12 bg-[#3e3e3e] rounded-xl border border-gray-500 overflow-hidden">
+                        <div className="w-3/11 h-11/12 bg-[#3e3e3e] rounded-xl border border-gray-600 overflow-hidden">
                             {(node.type == "emailNode") ? <EmailMidPanel></EmailMidPanel> : null}
                             {(node.type == "aiAgentNode") ? <AiMidPanel></AiMidPanel> : null}
                             {(node.type == "telegramNode") ? <TelegramMidPanel></TelegramMidPanel> : null}

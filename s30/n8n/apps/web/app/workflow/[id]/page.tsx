@@ -6,6 +6,8 @@ import LeftWorkFlowPanel from "./leftworkflowpanel/leftworkflowpanel"
 import WorkFlowPanel from "./workflowpanel/workflowpanel"
 import { usePanelStore } from "./stores/dataPanel"
 import OverlayPanel from "./overlayPanel/overlayPanel"
+import { useCredPanelStore } from "./stores/credentialPanel"
+import AddCredPanel from "./addCredential/addCrendentialPanel"
 
 export default function WorkFlow(){
     
@@ -14,6 +16,7 @@ export default function WorkFlow(){
     const params = useParams() 
     const id = params.id
     const {panelOpen, setPanelOpen} = usePanelStore()
+    const {credPanelOpen, setCredPanelOpen} = useCredPanelStore()
 
     useEffect(() => {
 
@@ -30,6 +33,7 @@ export default function WorkFlow(){
 
     return(
         <div>
+            {credPanelOpen && <AddCredPanel />}
             {panelOpen && <OverlayPanel />}
             <div className="flex flex-row h-screen w-screen">
                 <LeftWorkFlowPanel setSelectedMenu={setSelectedMenu} ></LeftWorkFlowPanel>
