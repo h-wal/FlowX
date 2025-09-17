@@ -4,7 +4,7 @@ interface rflowInnerProps{
   workFlow: any
 }
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
   useReactFlow,
   ReactFlowProvider,
@@ -53,7 +53,7 @@ function RFlowInner(props: rflowInnerProps) {
 
   const {triggerSave, setTriggerSave, saved, setSaved, saving, setSaving} = useSaveStore()
   const {excecuting, setExcecuting, triggerPressed, setTriggerPressed} = useTriggerStore()
-  const {panelOpen, setPanelOpen} = usePanelStore()
+  const { panelOpen, setPanelOpen,  setNode} = usePanelStore()
 
   const reactFlowInstance = useReactFlow();
 
@@ -155,6 +155,13 @@ function RFlowInner(props: rflowInnerProps) {
     []
   );
 
+  const onNodeDoubleClickHandler = useCallback((event: React.MouseEvent, node: any) => {
+    event.preventDefault();
+    setPanelOpen(true)
+    setNode(node)
+    console.log(node)
+  }, [setPanelOpen])
+
   const handleSave = async () => {
     const flow = JSON.stringify(toObject());
     console.log(flow);
@@ -196,6 +203,7 @@ function RFlowInner(props: rflowInnerProps) {
       console.log("Error fetching workflow")
     }
   }
+
 
   useEffect(() => {
     reactFlowInstance.fitView({ padding: 0.2 });
@@ -246,6 +254,7 @@ function RFlowInner(props: rflowInnerProps) {
       onMoveStart={handleMoveStart}
       onMoveEnd={handleMoveEnd}
       onNodesDelete={onNodeDeleteHandler}
+      onNodeDoubleClick={onNodeDoubleClickHandler}
       fitView={false}
     >
       <Background />

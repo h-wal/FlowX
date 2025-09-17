@@ -2,6 +2,7 @@ import { ReactElement } from "react"
 import { FlaskConicalIcon } from "lucide-react"
 
 export default function MidTopPanel(props: {
+    size?: any
     icon: any
     heading: string
 }){

@@ -1,13 +1,18 @@
 import { create } from "zustand";
 
 type PanelState = {
-    panelOpen: boolean;
-    setPanelOpen: (val: boolean) => void;
+    node: any,
+    panelOpen: boolean,
+    setPanelOpen: (val: boolean) => void,
+    setNode: (val: object) => void
+
 };
 
 export const usePanelStore = create<PanelState>((set) => ({
-
-    panelOpen: true,
-    setPanelOpen: (val) => set({panelOpen: val})
+    
+    node: {},
+    panelOpen: false,
+    setPanelOpen: (val) => set({panelOpen: val}),
+    setNode: (val) => set({node: val})
 
 }));
