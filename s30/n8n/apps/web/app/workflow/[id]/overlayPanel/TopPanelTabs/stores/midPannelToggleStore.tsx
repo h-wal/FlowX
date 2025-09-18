@@ -6,6 +6,6 @@ interface toggleStore{
 }
 
 export const useToggleStore = create<toggleStore>((set) => ({
-    panel: "settings",
+    panel: "parameters",
     setPanel: (val) => set({panel: val})
 }))

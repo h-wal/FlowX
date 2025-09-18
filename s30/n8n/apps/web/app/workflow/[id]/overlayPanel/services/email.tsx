@@ -2,9 +2,13 @@ import MidTopPanel from "../TopPanelTabs/midTopPanel"
 import MidTopToggle from "../TopPanelTabs/midTopToggle"
 import BottomPanelTab from "../BottomPanelTabs/bottomPanelTabs"
 import { MdEmail } from "react-icons/md"
-
+import CredentialTabBar from "../BottomPanelTabs/credentialPanel"
+import { usePanelStore} from "../../stores/dataPanel"
 
 export default function EmailMidPanel(){
+
+    const {setPanelOpen, panelOpen, node}  = usePanelStore()
+
     return (
         <div className="h-full w-full">
             <div className="h-[11%] bg-[#525355] flex flex-col justify-between">
@@ -12,7 +16,7 @@ export default function EmailMidPanel(){
                 <MidTopToggle></MidTopToggle>
             </div>
             <div className="h-[89%] bg-[#414244] p-2">
-                <BottomPanelTab heading={"Credential to connect with"} placeholder={"SMTP account"} /> {/* Replace with another panel which has a top down menu showing credentails */}  
+                <CredentialTabBar type={node.type} placeholder={"SMTP account"}></CredentialTabBar>
                 <BottomPanelTab heading={"Operation"} placeholder={"Send"} />
                 <BottomPanelTab heading={"From Email"} placeholder={"admin@example.com"} />
                 <BottomPanelTab heading={"To Email"} placeholder={"to@example.com"} />

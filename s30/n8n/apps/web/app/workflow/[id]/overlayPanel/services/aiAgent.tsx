@@ -2,6 +2,7 @@ import MidTopPanel from "../TopPanelTabs/midTopPanel"
 import MidTopToggle from "../TopPanelTabs/midTopToggle"
 import MidBottomPanel from "../TopPanelTabs/midBottomPanel"
 import { FaRobot } from "react-icons/fa"
+import CredentialTabBar from "../BottomPanelTabs/credentialPanel"
 
 
 export default function AiMidPanel(){
@@ -12,6 +13,7 @@ export default function AiMidPanel(){
                 <MidTopToggle></MidTopToggle>
             </div>
             <div className="h-[89%] bg-[#414244] p-2">
+                <CredentialTabBar placeholder={"gemini account"}></CredentialTabBar>
                 <MidBottomPanel></MidBottomPanel>
             </div>
         </div>

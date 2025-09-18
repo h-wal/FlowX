@@ -4,7 +4,7 @@ type credentialPanelstate = {
     type: any,
     credPanelOpen: boolean,
     setCredPanelOpen: (val: boolean) => void,
-    setType: (val: object) => void
+    setType: (val: string) => void
 
 };
 

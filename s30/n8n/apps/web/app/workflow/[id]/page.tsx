@@ -13,7 +13,7 @@ export default function WorkFlow(){
     
     const [selectedMenu, setSelectedMenu] = useState("Personal")
     const [workFlow , setWorkFlow] = useState<any>({})
-    const params = useParams() 
+    const params = useParams()
     const id = params.id
     const {panelOpen, setPanelOpen} = usePanelStore()
     const {credPanelOpen, setCredPanelOpen} = useCredPanelStore()

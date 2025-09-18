@@ -9,7 +9,7 @@ async function credentialsRouterPostFunction(req: any, res: Response){
 
     const userId = req.user.id
     const type = req.body.type
-    const credential = req.body.credentials
+    const credential = req.body.credential
 
     try{
         const response = await prismaClient.credentials.create({

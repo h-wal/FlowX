@@ -1,4 +1,4 @@
-import { usecredPanelLeftStore } from "../stores/credPanelLeft"
+import { usecredPanelLeftStore } from "../../../stores/credPanelLeft"
 
 export default function LeftPanelTabs({text}: {text: string}){
 

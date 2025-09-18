@@ -13,7 +13,7 @@ export default function OverlayPanel(){
     
     return(
         <div>
-            <div id="panelOverlay"  className="h-screen fixed inset-0 bg-[#454450]/90 z-50 text-white">
+            <div id="panelOverlay"  className="h-screen fixed inset-0 bg-[#454450]/90 z-1 text-white">
                     <div onClick={() => {setPanelOpen(false)}} className="px-8 py-3 text-sm cursor-pointer">
                         Back to canvas
                     </div>
