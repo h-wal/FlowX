@@ -1,4 +1,4 @@
-import BottomPanelTab from "../BottomPanelTabs/bottomPanelTabs"
+import BottomPanelTab from "../bottomPanel/BottomPanelTabs/bottomPanelTabs"
 
 export default function MidBottomPanel(){
     return(

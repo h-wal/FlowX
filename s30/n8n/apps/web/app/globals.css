@@ -103,6 +103,17 @@ html, body {
   height: 5%
 }
 
+.react-flow__edge-path {
+  stroke-width: 4;
+  stroke: #1a73e8;
+  transition: stroke-width 0.2s, stroke 0.2s;
+}
+
+.react-flow__edge-path:hover {
+  stroke-width: 6;
+  stroke: red;
+}
+
 @keyframes slideIn {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }

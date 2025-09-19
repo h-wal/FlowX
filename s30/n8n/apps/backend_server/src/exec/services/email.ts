@@ -13,8 +13,8 @@ export async function EmailFunction() {
 
   const mailOptions = {
     from: "harsh2102agarwal@gmail.com",   // must match user
-    to: "anx2ds@gmail.com",
-    subject: "You are dead",
+    to: "souravkumarsahu04@gmail.com",
+    subject: "MADHARCHODH BODY COUNT 4",
     text: "",
   };
 

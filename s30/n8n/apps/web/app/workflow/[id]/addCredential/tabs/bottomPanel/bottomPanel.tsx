@@ -1,6 +1,6 @@
 import LeftPanelTabs from "./leftPanel/leftPanelTabs"
 import RightPanelEmailContent from "./services/email"
-import { useCredPanelStore } from "../../../stores/credentialPanel"
+import { useCredPanelStore } from "../../../stores/uiStores/credentialPanel"
 
 export default function BottomPanel(){
 

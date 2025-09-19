@@ -4,9 +4,9 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import LeftWorkFlowPanel from "./leftworkflowpanel/leftworkflowpanel"
 import WorkFlowPanel from "./workflowpanel/workflowpanel"
-import { usePanelStore } from "./stores/dataPanel"
+import { usePanelStore } from "./stores/uiStores/dataPanel"
 import OverlayPanel from "./overlayPanel/overlayPanel"
-import { useCredPanelStore } from "./stores/credentialPanel"
+import { useCredPanelStore } from "./stores/uiStores/credentialPanel"
 import AddCredPanel from "./addCredential/addCrendentialPanel"
 
 export default function WorkFlow(){

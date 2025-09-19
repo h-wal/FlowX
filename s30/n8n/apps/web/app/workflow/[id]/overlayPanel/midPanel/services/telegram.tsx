@@ -3,7 +3,7 @@ import MidTopToggle from "../TopPanelTabs/midTopToggle"
 import MidBottomPanel from "../TopPanelTabs/midBottomPanel"
 import { FaTelegram } from "react-icons/fa"
 import { PiTelegramLogo } from "react-icons/pi"
-import CredentialTabBar from "../BottomPanelTabs/credentialPanel"
+import CredentialTabBar from "../bottomPanel/BottomPanelTabs/credentialPanel"
 
 
 export default function TelegramMidPanel(){

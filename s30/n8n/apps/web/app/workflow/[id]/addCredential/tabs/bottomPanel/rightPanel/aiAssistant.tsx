@@ -1,5 +1,5 @@
 import GradientIcon from "./aiIcon"
-import { useAiPanelStore } from "../../../../stores/askAiPanel"
+import { useAiPanelStore } from "../../../../stores/uiStores/useAiPanelStore"
 
 export default function AiAssistant(){
 

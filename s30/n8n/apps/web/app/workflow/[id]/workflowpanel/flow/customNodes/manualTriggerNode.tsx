@@ -19,7 +19,7 @@ export default function SquareNode(props: NodeProps) {
       <div
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
-        className="relative w-24 h-24 bg-[#3e3e3e] border-2 border-gray-500 rounded-md rounded-l-4xl shadow shadow-gray-500 flex items-center justify-center"
+        className="relative w-24 h-24 bg-[#3e3e3e] border-2 border-[#c2c8d5] rounded-md rounded-l-4xl shadow flex items-center justify-center"
       >
         {/* Left-side button */}
         <button

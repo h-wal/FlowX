@@ -15,6 +15,8 @@ import {
   Background,
   Controls,
   MiniMap,
+  Edge, 
+  MarkerType
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { TextUpdaterNode } from "./customNodes/textupdater";
@@ -23,7 +25,6 @@ import WebHookNode from "./customNodes/webhookTriggerNode";
 import PanelButton from "./ui/rightpanelbutton";
 import { pointer } from "./icons/pointer";
 import { webhook } from "./icons/webhook";
-import { telegramIcon } from "./icons/telegram";
 import { FaRobot, FaTelegram, FaTelegramPlane } from "react-icons/fa";
 import { Mail } from "lucide-react";
 import TelegramNode from "./customNodes/telegramNode";
@@ -33,7 +34,9 @@ import { useSaveStore } from "../stores/saveStore";
 import axios from "axios";
 import { useTriggerStore } from "../stores/triggerStore";
 import ExcecuteFlowButton from "./buttons/excecuteFlowButton";
-import { usePanelStore } from "../../stores/dataPanel";
+import { usePanelStore } from "../../stores/uiStores/dataPanel";
+import HoverEdge from "./hoverEdge";
+import { useNodeStore } from "../../stores/workflowStores/nodeStore";
 
 
 
@@ -46,7 +49,7 @@ const nodeTypes = {
   aiAgentNode: AiAgentNode
 };
 
-const initialNodes: any = [];
+// const initialNodes: any = [];
 const initialEdges: any = [];
 
 function RFlowInner(props: rflowInnerProps) {
@@ -57,7 +60,7 @@ function RFlowInner(props: rflowInnerProps) {
 
   const reactFlowInstance = useReactFlow();
 
-  const [nodes, setNodes] = useState(initialNodes);
+  const {nodes, setNodes} = useNodeStore();
   const [edges, setEdges] = useState(initialEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -204,6 +207,9 @@ function RFlowInner(props: rflowInnerProps) {
     }
   }
 
+  const edgeTypes = {
+    default: HoverEdge, // all edges will now use HoverEdge
+  };
 
   useEffect(() => {
     reactFlowInstance.fitView({ padding: 0.2 });
@@ -248,6 +254,7 @@ function RFlowInner(props: rflowInnerProps) {
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
@@ -256,6 +263,11 @@ function RFlowInner(props: rflowInnerProps) {
       onNodesDelete={onNodeDeleteHandler}
       onNodeDoubleClick={onNodeDoubleClickHandler}
       fitView={false}
+      defaultEdgeOptions={{
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+        },
+      }}
     >
       <Background />
       <Controls className="custom-controls" />

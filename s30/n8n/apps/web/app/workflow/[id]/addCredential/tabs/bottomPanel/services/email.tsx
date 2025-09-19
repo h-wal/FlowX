@@ -4,36 +4,49 @@ import NeedHelp from "../rightPanel/needHelp"
 import RightPanelTabs from "../rightPanel/rightPanelTabs"
 import axios from "axios"
 import { useCredPanelSaveButtonStore } from "../../../stores/credSaveStore"
+import { useCredPanelTitleStore } from "../../../stores/credCredPanelTitle"
 
 export default function RightPanelEmailContent(){
 
-    const {saveButtonPressed, setSaveButtonPressed} = useCredPanelSaveButtonStore()
+    const {saved ,setSaved, saveButtonPressed, setSaveButtonPressed} = useCredPanelSaveButtonStore()
+    const {CredTitle, setCredTitle} = useCredPanelTitleStore()
 
-    const [email, setEmail] = useState("h@gmail.com")
-    const [password, setPassword] = useState("harsh")
-    const [host, setHost] = useState("kajhsdf")
-    const [port, setPort] = useState("jaksdlf")
-    const [hostName, setHostName] = useState("asdhflk")
-    const [protocol, setProtocol] = useState("ahsldfk")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [host, setHost] = useState("")
+    const [port, setPort] = useState("")
+    const [hostName, setHostName] = useState("")
+    const [protocol, setProtocol] = useState("")
 
     useEffect(() => {
         if(saveButtonPressed){
             const saveCredentails = async() => {
                 try{
-                    const response = await axios.post("http://localhost:300/api/v1/excecution", {
-                        email,
-                        password,
-                        host,
-                        port,
-                        hostName,
-                        protocol
+                    const response = await axios.post("http://localhost:3030/api/v1/credentials", {
+                        type: "email",
+                        title: CredTitle,
+                        credential: 
+                        {
+                            email,
+                            password,
+                            host,
+                            port,
+                            hostName,
+                            protocol
+                        }
+                    }, {
+                        withCredentials: true
                     })
 
                     if (response) {
                         console.log("Credentials saved:", response)
                     }
+
+                    setSaved(true)
+
                 } catch(e){
                     console.log("Error Saving Credentials to DB", e)
+                    alert("Credentials with this title or these details already exists !")
                 } finally {
                     setSaveButtonPressed(false)
                 }
@@ -42,19 +55,18 @@ export default function RightPanelEmailContent(){
             saveCredentails()
         }
     }, [saveButtonPressed])
-    
 
     return(
         <div>
             <div className="flex flex-col p-2 pr-4 gap-4">
                 <NeedHelp></NeedHelp> 
                 <AiAssistant></AiAssistant>
-                <RightPanelTabs title={"User"}></RightPanelTabs>
-                <RightPanelTabs title={"Password"}></RightPanelTabs>
-                <RightPanelTabs title={"Host"}></RightPanelTabs>
-                <RightPanelTabs title={"Port"}></RightPanelTabs>
-                <RightPanelTabs title={"Client Host Name"}></RightPanelTabs>
-                <RightPanelTabs title={"SSL/TLS"}></RightPanelTabs>
+                <RightPanelTabs value={email} setValue={setEmail} title={"User"}></RightPanelTabs>
+                <RightPanelTabs value={password} setValue={setPassword} title={"Password"}></RightPanelTabs>
+                <RightPanelTabs value={host} setValue={setHost} title={"Host"}></RightPanelTabs>
+                <RightPanelTabs value={port} setValue={setPort} title={"Port"}></RightPanelTabs>
+                <RightPanelTabs value={hostName} setValue={setHostName} title={"Client Host Name"}></RightPanelTabs>
+                <RightPanelTabs value={protocol} setValue={setProtocol} title={"SSL/TLS"}></RightPanelTabs>
             </div>
         </div>
     )

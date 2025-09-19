@@ -7,15 +7,17 @@ const credentialsRouter: Router = express.Router()
 
 async function credentialsRouterPostFunction(req: any, res: Response){
 
-    const userId = req.user.id
+    const userId = req.user?.id
     const type = req.body.type
     const credential = req.body.credential
+    const title = req.body.title
 
     try{
         const response = await prismaClient.credentials.create({
             data:{
                 type: type,
                 credential: credential,
+                title: title,
                 userId: userId
             }
         })
@@ -45,9 +47,7 @@ async function credentialsRouterGetFunction(req: any, res: Response){
     } catch(e){
         res.status(401).send("Error fetching data"+e)
     }
-        
 
-    
 }
 
 credentialsRouter.post("/", authentication, credentialsRouterPostFunction)

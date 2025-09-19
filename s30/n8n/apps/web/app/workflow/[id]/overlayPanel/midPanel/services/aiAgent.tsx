@@ -2,7 +2,7 @@ import MidTopPanel from "../TopPanelTabs/midTopPanel"
 import MidTopToggle from "../TopPanelTabs/midTopToggle"
 import MidBottomPanel from "../TopPanelTabs/midBottomPanel"
 import { FaRobot } from "react-icons/fa"
-import CredentialTabBar from "../BottomPanelTabs/credentialPanel"
+import CredentialTabBar from "../bottomPanel/BottomPanelTabs/credentialPanel"
 
 
 export default function AiMidPanel(){
