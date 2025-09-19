@@ -178,7 +178,7 @@ function RFlowInner(props: rflowInnerProps) {
 
       if (res) {
         console.log("Saved Successfully");
-        setSaved(true);   // ✅ reset saved flag
+        setSaved(true);  
         setSaving(false);
         setTriggerSave(false)
       }
@@ -186,7 +186,7 @@ function RFlowInner(props: rflowInnerProps) {
       alert("Error saving");
       setTriggerSave(false)
       setSaving(false);
-      setSaved(false); // stay dirty
+      setSaved(false); 
     }
   };
 
@@ -208,7 +208,7 @@ function RFlowInner(props: rflowInnerProps) {
   }
 
   const edgeTypes = {
-    default: HoverEdge, // all edges will now use HoverEdge
+    default: HoverEdge, 
   };
 
   useEffect(() => {

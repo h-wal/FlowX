@@ -158,7 +158,7 @@ export default function CredentialTabBar({
                 key={cred.id}
                 onClick={() => {
                   setValue(cred.title);
-                  setter(cred.title)
+                  setter(cred.tiel)
                   setOpen(false);
                 }}
                 className="px-3 py-2 cursor-pointer hover:bg-gray-700"
