@@ -69,6 +69,8 @@ import axios from "axios";
 import { useCredentialsStore } from "../../../stores/credentialsStore";
 
 interface bottomPanelTabsProps {
+  setter: any
+  title: string,
   type?: string;
   heading?: string;
   placeholder?: string;
@@ -76,6 +78,8 @@ interface bottomPanelTabsProps {
 }
 
 export default function CredentialTabBar({
+  setter,
+  title,
   type,
   heading,
   placeholder,
@@ -93,6 +97,10 @@ export default function CredentialTabBar({
   }
 
   useEffect(() => {
+
+    if(!setCredentials){
+
+    }
     try {
       const fetchCreds = async () => {
         const response = await axios.get(
@@ -110,12 +118,12 @@ export default function CredentialTabBar({
     } catch (e) {
       console.log("Error fetching Credentials");
     }
-  }, [setCredentials]);
+  }, []);
 
   // filter credentials by title while typing
   const filtered = credentials.filter((cred: any) => 
     {
-        console.log(cred); // see what your object actually looks like
+        // console.log(cred); // see what your object actually looks like
         const text = cred?.title || "";
         return text.includes(value.toLowerCase());
     }
@@ -129,9 +137,10 @@ export default function CredentialTabBar({
         {/* Input */}
         <input
           type="text"
-          value={value}
+          value={title}
           onChange={(e) => {
             setValue(e.target.value);
+            setter(e.target.value);
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
@@ -149,6 +158,7 @@ export default function CredentialTabBar({
                 key={cred.id}
                 onClick={() => {
                   setValue(cred.title);
+                  setter(cred.title)
                   setOpen(false);
                 }}
                 className="px-3 py-2 cursor-pointer hover:bg-gray-700"
