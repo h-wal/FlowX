@@ -14,7 +14,7 @@ export default function TelegramMidPanel(){
                 <MidTopToggle></MidTopToggle>
             </div>
             <div className="h-[89%] bg-[#414244] p-2">
-                <CredentialTabBar placeholder={"telegram account"}></CredentialTabBar>
+                {/* <CredentialTabBar placeholder={"telegram account"}></CredentialTabBar> */}
                 <MidBottomPanel></MidBottomPanel>
             </div>
         </div>
