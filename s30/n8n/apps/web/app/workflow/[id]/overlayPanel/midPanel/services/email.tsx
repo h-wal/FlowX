@@ -8,6 +8,7 @@ import { useExcecuteButtonStore } from "../../stores/excecuteStore"
 import { useEffect, useState } from "react"
 import { useNodeStore } from "../../../stores/workflowStores/nodeStore"
 import { useCredentialsStore } from "../../stores/credentialsStore"
+import { useSaveStore } from "../../../workflowpanel/stores/saveStore"
 
 export default function EmailMidPanel(){
 
@@ -15,6 +16,7 @@ export default function EmailMidPanel(){
     const {credentials, setCredentials} = useCredentialsStore()
     const {nodes, setNodes} = useNodeStore()
     const {isExcecuteButtonPressed, setIsExcecuteButtonPressed} = useExcecuteButtonStore()
+    const {setTriggerSave} = useSaveStore()
 
 
     //@ts-ignore
@@ -51,7 +53,7 @@ export default function EmailMidPanel(){
                 )
             );
 
-            
+            setTriggerSave(true)
 
             return true
         };
