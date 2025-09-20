@@ -10,6 +10,7 @@ import { useNodeStore } from "../../../stores/workflowStores/nodeStore"
 import { useCredentialsStore } from "../../stores/credentialsStore"
 import { useSaveStore } from "../../../workflowpanel/stores/saveStore"
 import { useSelectedCredentialStore } from "../../stores/selectedCredentialStore"
+import { useCredAddedStore } from "../../../stores/uiStores/credentialAdded"
 
 export default function EmailMidPanel(){
 
@@ -29,6 +30,7 @@ export default function EmailMidPanel(){
     const [subject, setSubject] = useState(node.data.subject || "")
     const [emailFormat, setEmailFormat] = useState(node.data.emailFormat || "")
     const [text, setText] = useState(node.data.text || "")
+    const {newCredentialAdded, setNewCredentialAdded} = useCredAddedStore()
 
 
     useEffect((() => {

@@ -5,6 +5,8 @@ import RightPanelTabs from "../rightPanel/rightPanelTabs"
 import axios from "axios"
 import { useCredPanelSaveButtonStore } from "../../../stores/credSaveStore"
 import { useCredPanelTitleStore } from "../../../stores/credCredPanelTitle"
+import { useSelectedCredentialStore } from "../../../../overlayPanel/stores/selectedCredentialStore"
+import { useCredAddedStore } from "../../../../stores/uiStores/credentialAdded"
 
 export default function RightPanelEmailContent(){
 
@@ -17,6 +19,8 @@ export default function RightPanelEmailContent(){
     const [port, setPort] = useState("")
     const [hostName, setHostName] = useState("")
     const [protocol, setProtocol] = useState("")
+    const {setSelectedCredentialTitle, selectedCredentialTitle} = useSelectedCredentialStore()
+    const {setNewCredentialAdded, newCredentialAdded} = useCredAddedStore()
 
     useEffect(() => {
         if(saveButtonPressed){
@@ -48,6 +52,9 @@ export default function RightPanelEmailContent(){
                     console.log("Error Saving Credentials to DB", e)
                     alert("Credentials with this title or these details already exists !")
                 } finally {
+                    
+                    setNewCredentialAdded(true)
+                    setSelectedCredentialTitle(CredTitle)
                     setSaveButtonPressed(false)
                 }
             }

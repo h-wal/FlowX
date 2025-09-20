@@ -1,15 +1,17 @@
 import { MdEmail } from "react-icons/md"
 import { X } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useCredPanelSaveButtonStore } from "../../stores/credSaveStore"
 import { useCredPanelStore } from "../../../stores/uiStores/credentialPanel"
 import { useCredPanelTitleStore } from "../../stores/credCredPanelTitle"
+import { useSelectedCredentialStore } from "../../../overlayPanel/stores/selectedCredentialStore"
 
 export default function TopPanel(){
 
     const {saved, setSaved, saveButtonPressed, setSaveButtonPressed} = useCredPanelSaveButtonStore()
     const {credPanelOpen, setCredPanelOpen, type} = useCredPanelStore()
     const {CredTitle, setCredTitle} = useCredPanelTitleStore()
+    const {selectedCredentialTitle, setSelectedCredentialTitle} = useSelectedCredentialStore()
 
     function generateTitle() {
         if (!CredTitle || CredTitle.trim() === "") {
@@ -21,7 +23,7 @@ export default function TopPanel(){
         return CredTitle;
     }
 
-    generateTitle()
+    useEffect((() => {generateTitle()}), [])
 
     return(
         <div className="flex flex-row h-[15%] border-b border-[#525355] justify-between p-6">

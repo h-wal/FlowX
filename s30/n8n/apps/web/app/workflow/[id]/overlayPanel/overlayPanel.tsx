@@ -1,7 +1,7 @@
 import { usePanelStore } from "../stores/uiStores/dataPanel"
 import MidTopPanel from "./midPanel/TopPanelTabs/midTopPanel"
 import MidTopToggle from "./midPanel/TopPanelTabs/midTopToggle"
-import MidBottomPanel from "./midPanel/TopPanelTabs/midBottomPanel"
+// import MidBottomPanel from "./midPanel/TopPanelTabs/midBottomPanel"
 import { FaTelegramPlane } from "react-icons/fa"
 import MidPanel from "./midPanel/midPanel"
 
