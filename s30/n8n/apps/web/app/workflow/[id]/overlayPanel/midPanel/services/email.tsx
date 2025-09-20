@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import { useNodeStore } from "../../../stores/workflowStores/nodeStore"
 import { useCredentialsStore } from "../../stores/credentialsStore"
 import { useSaveStore } from "../../../workflowpanel/stores/saveStore"
+import { useSelectedCredentialStore } from "../../stores/selectedCredentialStore"
 
 export default function EmailMidPanel(){
 
@@ -17,10 +18,11 @@ export default function EmailMidPanel(){
     const {nodes, setNodes} = useNodeStore()
     const {isExcecuteButtonPressed, setIsExcecuteButtonPressed} = useExcecuteButtonStore()
     const {setTriggerSave} = useSaveStore()
+    const {selectedCredentialTitle, setSelectedCredentialTitle} = useSelectedCredentialStore()
 
 
     //@ts-ignore
-    const [credentialTitle , setCredentialTitle] = useState(node.data.credentialTitle || credentials.title || "")
+    // const [credentialTitle , setCredentialTitle] = useState(node.data.credentialTitle || credentials.title || "")
     const [operation, setOperation] = useState("Send")
     const [fromEmail, setFromEmail] = useState(node.data.fromEmail || "")
     const [toEmail, setToEmail] = useState(node.data.toEmail || "")
@@ -40,7 +42,7 @@ export default function EmailMidPanel(){
                         ...n, 
                         data: {
                         ...n.data,
-                        credentialTitle,       // keep existing data
+                        selectedCredentialTitle,       // keep existing data
                         operation,
                         fromEmail,
                         toEmail,
@@ -79,7 +81,7 @@ export default function EmailMidPanel(){
                 <MidTopToggle></MidTopToggle>
             </div>
             <div className="h-[89%] bg-[#414244] p-2">
-                <CredentialTabBar title={credentialTitle} setter={setCredentialTitle} type={node.type} placeholder={"SMTP account"}></CredentialTabBar>
+                <CredentialTabBar type={node.type} placeholder={"SMTP account"}></CredentialTabBar>
                 <BottomPanelTab value={operation} setValue={setOperation} heading={"Operation"} placeholder={"Send"} />
                 <BottomPanelTab value={fromEmail} setValue={setFromEmail} heading={"From Email"} placeholder={"admin@example.com"} />
                 <BottomPanelTab value={toEmail} setValue={setToEmail} heading={"To Email"} placeholder={"to@example.com"} />
