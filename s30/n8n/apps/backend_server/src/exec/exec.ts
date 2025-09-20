@@ -1,42 +1,42 @@
 import express, { Router } from "express";
 import type { Request, Response } from "express";
 import { prismaClient } from "@repo/db/client";
-// import { nodeQueue } from "./queues/nodeQueue.js";
+import { nodeQueue } from "./queues/nodeQueueWorker.js";
 import { EmailFunction } from "./services/email.js";
 
 const excecutionRouter: Router = express.Router();
 
 async function excecuteRouterFunction(req: Request, res: Response) {
   try {
-    // 1. Example: Trigger email for testing
-    // const emailResult = await EmailFunction();
-    setInterval(() => EmailFunction() , 100)
 
-    // const emailResult = await EmailFunction();
-    // 2. (Later) Use workflow execution logic
-    // const workFlowId = req.body.workFlowId;
-    // const workFlow = await prismaClient.workflow.findFirst({
-    //   where: { id: workFlowId },
-    // });
+    const workFlowId = req.body.workFlowId; 
 
-    // if (workFlow?.flow) {
-    //   const workFlowObject: {
-    //     nodes: { id: number; type: string; data: object }[];
-    //     edges: object[];
-    //   } = JSON.parse(workFlow.flow);
+    const workFlow = await prismaClient.workflow.findFirst({
+      where: { id: workFlowId },
+    });
 
-    //   for (const node of workFlowObject.nodes) {
-    //     await nodeQueue.add(`node-${node.id}`, node);
-    //   }
+    console.log(workFlow)
 
-    //   return res.json({ success: true, message: "Workflow enqueued" });
-    // } else {
-    //   return res.status(401).json({ success: false, error: "Invalid workflow" });
-    // }
+    if (workFlow?.flow) {
+      const workFlowObject: {
+        nodes: { id: number; type: string; data: object }[];
+        edges: object[];
+      } = JSON.parse(workFlow.flow);
 
-    // 3. For now just return email result
+      for (const node of workFlowObject.nodes) {
+        await nodeQueue.add(`node-${node.id}`, node);
+        console.log(`added ${node.id} to queue`)
+      }
 
-    return res.json("emailResult");
+      console.log("queue addition complete")
+
+      return res.json({ success: true, message: "Workflow enqueued" });
+
+    } else {
+
+      return res.status(401).json({ success: false, error: "Invalid workflow" });
+      
+    }
 
   } catch (error) {
     console.error("Error in excecuteRouterFunction:", error);

@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 
 export async function EmailFunction() {
+
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -13,9 +14,9 @@ export async function EmailFunction() {
 
   const mailOptions = {
     from: "harsh2102agarwal@gmail.com",   // must match user
-    to: "souravkumarsahu04@gmail.com",
-    subject: "MADHARCHODH BODY COUNT 4",
-    text: "",
+    to: "anx2ds@gmail.com",
+    subject: "sent from xflow",
+    text: "message auto sent from xflow ",
   };
 
   try {
