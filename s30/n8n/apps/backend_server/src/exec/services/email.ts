@@ -1,22 +1,36 @@
 import nodemailer from "nodemailer";
 
-export async function EmailFunction() {
+type EmailParams = {
+  from: string,
+  to: string,
+  subject: string,
+  text? : string,
+  html? : string
+  host : string,
+  port : number,
+  authEmail: string,
+  authPass: string,
 
+}
+
+export async function EmailFunction({from, to, subject, text, html, host, port, authEmail, authPass}: EmailParams) {
+
+  console.log("email details",from, to, subject, text, html, host, port, authEmail, authPass)
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
+    host: host,
+    port: port,
     secure: false, // STARTTLS
     auth: {
-      user: "harsh2102agarwal@gmail.com", // must match
-      pass: "rlzscmaotrsnwstp",         // your Gmail App Password
+      user: authEmail, // must match
+      pass: authPass         // your Gmail App Password
     },
   });
 
   const mailOptions = {
-    from: "harsh2102agarwal@gmail.com",   // must match user
-    to: "anx2ds@gmail.com",
-    subject: "sent from xflow",
-    text: "message auto sent from xflow ",
+    from: from,  // must match user
+    to: to,
+    subject: subject,
+    text: text,
   };
 
   try {
