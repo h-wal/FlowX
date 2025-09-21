@@ -31,7 +31,7 @@ export default function AiAgentNode(props: NodeProps) {
       <div
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
-        className="relative w-48 h-24 bg-[#3e3e3e] border-2 border-gray-500 rounded-md shadow shadow-gray-500 flex items-center justify-center"
+        className="relative w-48 h-24 bg-[#3e3e3e] border-2 border-[#c2c8d5] rounded-md shadow shadow-gray-500 flex items-center justify-center"
       >
 
         {/* Top control panel */}
