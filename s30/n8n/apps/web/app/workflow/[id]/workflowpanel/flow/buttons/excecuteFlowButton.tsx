@@ -11,7 +11,7 @@ export default function ExcecuteFlowButton(){
 
 
     return(
-        <Panel onClick={() => {setSaved(true); setTriggerSave(true); setTriggerPressed(true)}} position="bottom-center" className="cursor-pointer bg-[#fe6f5b] text-xs p-3 px-5 rounded-md my-250 hover:bg-[#EF4E39]">
+        <Panel onClick={() => {setSaved(false); setTriggerSave(true); setTriggerPressed(true)}} position="bottom-center" className="cursor-pointer bg-[#fe6f5b] text-xs p-3 px-5 rounded-md my-250 hover:bg-[#EF4E39]">
             
             <div className="flex flex-row gap-2">
             <div className="flex justify-center items-center">

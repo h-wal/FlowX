@@ -1,18 +1,18 @@
 import { create } from "zustand";
 
 type credentialPanelstate = {
-    type: any,
+    credPanelType: any,
     credPanelOpen: boolean,
     setCredPanelOpen: (val: boolean) => void,
-    setType: (val: string) => void
+    setCredPanelType: (val: string) => void
 
 };
 
 export const useCredPanelStore = create<credentialPanelstate>((set) => ({
     
-    type: "",
+    credPanelType: "",
     credPanelOpen: false,
     setCredPanelOpen: (val) => set({credPanelOpen: val}),
-    setType: (val) => set({type: val})
+    setCredPanelType: (val) => set({credPanelType: val})
 
 }));

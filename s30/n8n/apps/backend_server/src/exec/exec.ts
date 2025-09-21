@@ -6,9 +6,12 @@ import { EmailFunction } from "./services/email.js";
 
 const excecutionRouter: Router = express.Router();
 
+let counter = 1;
 async function excecuteRouterFunction(req: Request, res: Response) {
   try {
 
+    console.log("recevied req " , counter)
+    counter ++
     const workFlowId = req.body.workFlowId; 
 
     const workFlow = await prismaClient.workflow.findFirst({

@@ -57,9 +57,7 @@ function RFlowInner(props: rflowInnerProps) {
   const {triggerSave, setTriggerSave, saved, setSaved, saving, setSaving} = useSaveStore()
   const {excecuting, setExcecuting, triggerPressed, setTriggerPressed} = useTriggerStore()
   const { panelOpen, setPanelOpen,  setNode} = usePanelStore()
-
   const reactFlowInstance = useReactFlow();
-
   const {nodes, setNodes} = useNodeStore();
   const [edges, setEdges] = useState(initialEdges);
   const [showMiniMap, setShowMiniMap] = useState(false);
@@ -167,7 +165,7 @@ function RFlowInner(props: rflowInnerProps) {
 
   const handleSave = async () => {
     const flow = JSON.stringify(toObject());
-    console.log(flow);
+    console.log("handle saved function got called");
 
     try {
       setSaving(true);
@@ -186,7 +184,7 @@ function RFlowInner(props: rflowInnerProps) {
       alert("Error saving");
       setTriggerSave(false)
       setSaving(false);
-      setSaved(false); 
+      setSaved(true); 
     }
   };
 
@@ -216,7 +214,8 @@ function RFlowInner(props: rflowInnerProps) {
   }, [reactFlowInstance]);
 
   useEffect(() => {
-    if(triggerSave){
+    console.log("save triggered", saved)
+    if(!saved){
       handleSave()
     }
   }, [triggerSave])
@@ -240,10 +239,10 @@ function RFlowInner(props: rflowInnerProps) {
   }, [props.workFlow, reactFlowInstance]);
 
   useEffect(() => {
-    if(triggerPressed && !saving){
+    if(triggerPressed && saved){
       excecuteWorkflow()
     }
-  }, [triggerPressed, saving])
+  }, [triggerPressed, saved])
 
   return (
     <ReactFlow

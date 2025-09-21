@@ -1,6 +1,6 @@
 import { useCredPanelSaveButtonStore } from "../../../stores/credSaveStore"
 
-export default function RigtPanelTabs({title, setValue, value}: {title: string, setValue: any, value: any}){
+export default function RigtPanelTabs({title, setValue, value}: {title: string, setValue: any, value: string}){
 
     const {setSaveButtonPressed, setSaved, saved } = useCredPanelSaveButtonStore()
 
@@ -11,7 +11,7 @@ export default function RigtPanelTabs({title, setValue, value}: {title: string, 
                     {title}
                 </div>
                 <div>
-                    <input type="text" onChange={(e) => {setValue(e.target.value); setSaved(false)}} className={` ${( value == "") ? `border-[#fe6f5b]` : `border-gray-400` } w-full rounded-md p-2 border bg-[#2e2e2e]`}/>
+                    <input type="text" value={value} onChange={(e) => {setValue(e.target.value); setSaved(false)}} className={` ${( value == "") ? `border-[#fe6f5b]` : `border-gray-400` } w-full rounded-md p-2 border bg-[#2e2e2e]`}/>
                 </div>
             </div>
         </div>

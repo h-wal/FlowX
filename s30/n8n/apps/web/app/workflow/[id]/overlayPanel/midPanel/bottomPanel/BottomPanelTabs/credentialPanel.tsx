@@ -16,7 +16,7 @@ export default function CredentialTabBar({
   placeholder,
 }: credentialInputBarProps) {
   const { credentials, setCredentials } = useCredentialsStore();
-  const { setCredPanelOpen, setType } = useCredPanelStore();
+  const { setCredPanelOpen, setCredPanelType } = useCredPanelStore();
   const { selectedCredentialTitle, setSelectedCredentialTitle } = useSelectedCredentialStore();
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -119,7 +119,7 @@ export default function CredentialTabBar({
                 <li className="px-4 py-3 text-gray-400">No credentials found</li>
               )}
             </ul>
-            <div onClick={() => {setType(type);setCredPanelOpen(true)}} className="p-4 border-t border-gray-600 hover:bg-[#525355] cursor-pointer">
+            <div onClick={() => {setCredPanelType(type);setCredPanelOpen(true)}} className="p-4 border-t border-gray-600 hover:bg-[#525355] cursor-pointer">
               + Create New Credential
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function CredentialTabBar({
         {/* Pencil button */}
         <div
           onClick={() => {
-            setType(type);
+            setCredPanelType(type);
             setCredPanelOpen(true);
           }}
           className="cursor-pointer w-[10%] flex justify-center items-center"

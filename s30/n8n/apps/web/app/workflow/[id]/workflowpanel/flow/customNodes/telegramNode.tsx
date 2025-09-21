@@ -20,7 +20,7 @@ export default function TelegramNode(props: NodeProps) {
       <div
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
-        className="relative w-24 h-24 bg-[#3e3e3e] border-2 border-gray-500 rounded-md shadow shadow-gray-500 flex items-center justify-center"
+        className="relative w-24 h-24 bg-[#3e3e3e] border-2 border-[#c2c8d5]  rounded-md shadow  flex items-center justify-center"
       >
 
         {/* Top control panel */}

@@ -14,8 +14,8 @@ export default function MidTopPanel(props: {
     return(
 
         <div className="flex flex-row justify-between pt-4 pl-4 pr-4">
-            <div className="flex flex-row gap-3">
-                <div className="pt-1">
+            <div className="flex flex-row gap-2">
+                <div className="flex justify-center items-center">
                     <props.icon />
                 </div>
                 <div>
