@@ -3,13 +3,19 @@ import { connection } from './redis.js';
 import { EmailFunction } from '../services/email.js';
 import { prismaClient } from '@repo/db/client';
 import SendTelegramBotMessage from '../services/telegram.js';
+import { aiAgent } from '../services/aiAgent/aiAgent.js';
 
 export const nodeQueue = new Queue('workflowNodeQueue', { connection });
-
 
 export const nodeWorker = new Worker(
   'workflowNodeQueue',
   async (job: Job) => {
+
+    console.log(job.name)
+    console.log(job.data)
+    // prismaClient.jobs.create({
+    //   workFlow
+    // })
 
     console.log('Processing node job:', job.name);
 
@@ -21,13 +27,16 @@ export const nodeWorker = new Worker(
 
     const data = job.data.data
 
-    const reqCredential = await prismaClient.credentials.findUnique({ 
+    if(data.selectedCredentialTitle){
+      const reqCredential = await prismaClient.credentials.findUnique({ 
       where:{
         title: data.selectedCredentialTitle
       }})
     
-    console.log(reqCredential)
+      console.log(reqCredential)
 
+    }
+    
     switch(job.data.type){
       case "emailNode":
         const isEmailSent = await EmailFunction({
@@ -59,6 +68,12 @@ export const nodeWorker = new Worker(
 
       case "manualTrigger":
         result=({success: true, message: "TriggerPressed"})
+        break;
+
+      case "aiAgentNode":
+        console.log("reached ai agent node")
+        const res = await aiAgent({modelName:"gpt-4o", reqTools:[], prompt:data.Prompt as string})
+        console.log(res)
         break;
         
       case "telegramNode":

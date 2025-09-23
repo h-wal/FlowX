@@ -22,6 +22,7 @@
     "@types/node": "^22.15.3",
     "@types/nodemailer": "^7.0.1",
     "@types/nodemon": "^3.1.1",
+    "core": "link:@types/langchain/core",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
@@ -29,6 +30,10 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@langchain/core": "^0.3.77",
+    "@langchain/google-genai": "^0.2.18",
+    "@langchain/langgraph": "^0.4.9",
+    "@langchain/openai": "^0.6.13",
     "@repo/db": "workspace:*",
     "@types/cors": "^2.8.19",
     "@types/node-telegram-bot-api": "^0.64.11",
@@ -40,7 +45,9 @@
     "express": "^5.1.0",
     "ioredis": "^5.7.0",
     "jsonwebtoken": "^9.0.2",
+    "langgraph": "link:@types/langchain/langgraph",
     "node-telegram-bot-api": "^0.66.0",
-    "nodemailer": "^7.0.6"
+    "nodemailer": "^7.0.6",
+    "zod": "^4.1.11"
   }
 }

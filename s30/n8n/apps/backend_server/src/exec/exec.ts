@@ -4,6 +4,7 @@ import { prismaClient } from "@repo/db/client";
 import { nodeQueue } from "./queues/nodeQueueWorker.js";
 import { EmailFunction } from "./services/email.js";
 
+
 const excecutionRouter: Router = express.Router();
 
 let counter = 1;
@@ -29,6 +30,7 @@ async function excecuteRouterFunction(req: Request, res: Response) {
       for (const node of workFlowObject.nodes) {
         await nodeQueue.add(`node-${node.id}`, node);
         console.log(`added ${node.id} to queue`)
+        console.log(node)
       }
 
       console.log("queue addition complete")

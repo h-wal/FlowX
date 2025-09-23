@@ -41,6 +41,16 @@ model Workflow {
   user          User      @relation(fields: [userId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  jobs          Jobs[]
+}
+
+model Jobs {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  workflowID    String    @db.ObjectId
+  workflow      Workflow  @relation(fields: [workflowID], references: [id])
+  node          String    @default("")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Webhook {
