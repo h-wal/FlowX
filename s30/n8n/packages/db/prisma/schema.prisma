@@ -36,7 +36,7 @@ model Workflow {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   title         String?   @default("")
   enabled       Boolean?  @default(false)
-  flow          String?    @default("")
+  flow          String?   @default("")
   userId        String    @db.ObjectId
   user          User      @relation(fields: [userId], references: [id])
   createdAt     DateTime  @default(now())
@@ -48,7 +48,8 @@ model Jobs {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   workflowID    String    @db.ObjectId
   workflow      Workflow  @relation(fields: [workflowID], references: [id])
-  node          String    @default("")
+  node          Json      
+  status        String    @default("")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }

@@ -1,4 +1,5 @@
-import { Queue, Worker, Job } from 'bullmq';
+//@ts-nocheck
+import { Queue, Worker } from 'bullmq';
 import { connection } from './redis.js';
 import { EmailFunction } from '../services/email.js';
 import { prismaClient } from '@repo/db/client';
@@ -8,99 +9,123 @@ import { aiAgent } from '../services/aiAgent/aiAgent.js';
 export const nodeQueue = new Queue('workflowNodeQueue', { connection });
 
 export const nodeWorker = new Worker(
-  'workflowNodeQueue',
-  async (job: Job) => {
+  "workflowNodeQueue",
+  async (job: any) => {
+    // create DB record
+    const createdJob = await prismaClient.jobs.create({
+      data: {
+        workflowID: job.data.workflowId,
+        node: job.data,
+        status: "queued",
+      },
+    });
 
-    console.log(job.name)
-    console.log(job.data)
-    // prismaClient.jobs.create({
-    //   workFlow
-    // })
+    // attach DB id to job
+    job.updateProgress({ dbId: createdJob.id });
 
-    console.log('Processing node job:', job.name);
+    let result;
 
-    let result: {
-        success: boolean,
-        message?: string,
-        error?: string
-    };
+    try {
+      const data = job.data.data;
+      let reqCredential = null;
 
-    const data = job.data.data
+      if (data.selectedCredentialTitle) {
+        reqCredential = await prismaClient.credentials.findUnique({
+          where: { title: data.selectedCredentialTitle },
+        });
+        if (!reqCredential) throw new Error("Credential not found");
+      }
 
-    if(data.selectedCredentialTitle){
-      const reqCredential = await prismaClient.credentials.findUnique({ 
-      where:{
-        title: data.selectedCredentialTitle
-      }})
-    
-      console.log(reqCredential)
+      switch (job.data.type) {
+        case "emailNode":
+        try {
+          const emailResponse: 
+            { success: boolean; messageId: string; error?: never; } | { success: boolean; error: unknown; messageId?: never; }
+           = await EmailFunction({
+            to: data.toEmail,
+            from: data.fromEmail,
+            subject: data.subject,
+            text: data.text,
+            //@ts-ignore
+            host: reqCredential?.credential?.host ,
+            //@ts-ignore
+            authEmail: reqCredential?.credential?.email,
+            //@ts-ignore
+            authPass: reqCredential?.credential?.password,
+            port: 587,
+          });
 
-    }
-    
-    switch(job.data.type){
-      case "emailNode":
-        const isEmailSent = await EmailFunction({
-          to: data.toEmail as string,
-          from: data.fromEmail as string,
-          subject: data.subject as string,
-          text: data.text as string,
-          //@ts-ignore
-          host: reqCredential?.credential?.host as string,
-          //@ts-ignore
-          authEmail: reqCredential?.credential?.email as string,
-          //@ts-ignore
-          authPass: reqCredential?.credential?.password as string,
-          port: 587
-        })
-        // console.log(job.data)
+          if (!emailResponse.success) {
+            //@ts-ignore
+            throw new Error(emailResponse.error?.message || "Email failed to send");
+          }
 
-        console.log(isEmailSent)
-
-        if(!isEmailSent){
-          return { status: 'failed' };
+          result = { status: "success", message: "Email sent" };
+        } catch (err) {
+          throw err; // bubble up so BullMQ marks failed
         }
-
-        if(isEmailSent){
-          return {stutus: 'success'}
-        }
-        
         break;
 
-      case "manualTrigger":
-        result=({success: true, message: "TriggerPressed"})
-        break;
+        case "manualTrigger":
+          result = { status: "success", message: "Trigger pressed" };
+          break;
 
-      case "aiAgentNode":
-        console.log("reached ai agent node")
-        const res = await aiAgent({modelName:"gpt-4o", reqTools:[], prompt:data.Prompt as string})
-        console.log(res)
-        break;
-        
-      case "telegramNode":
-        console.log(data)
-        //@ts-ignore
-        const accessToken = reqCredential?.credential?.accessToken
-        const chatId = data.ChatId
-        const chat = data.text
+        case "aiAgentNode":
+          await aiAgent({ modelName: "gpt-4o", reqTools: [], prompt: data.Prompt });
+          result = { status: "success", message: "AI agent ran" };
+          break;
 
-        SendTelegramBotMessage({
-            accessToken,
-            chatId,
-            chat
-        })
+        case "telegramNode":
+          SendTelegramBotMessage({
+            //@ts-ignore
+            accessToken: reqCredential?.credential?.accessToken,
+            chatId: data.ChatId,
+            chat: data.text,
+          });
+          result = { status: "success", message: "Telegram sent" };
+          break;
 
-        result=({success: true, message: "Telegram Sent"})
-        break;
-
-      default:
-        console.log("node type not supported yet :( ", job.name, job.data)
-        throw new Error(`Unsupported node type: ${job.data.type}`);
+        default:
+          throw new Error(`Unsupported node type: ${job.data.type}`);
+      }
+    } catch (err) {
+      // rethrow so BullMQ marks the job as failed
+      throw err;
     }
 
-
-    console.log('Finished node job:', job.name);
-    return { status: 'done' };
-
+    return result;
   },
   { connection }
 );
+
+// ✅ Completed event
+nodeWorker.on("completed", async (job) => {
+  const dbId = job.progress.dbId;
+  if (!dbId) return;
+
+  await prismaClient.jobs.update({
+    where: { id: dbId },
+    data: {
+      status: "success",
+      message: job.returnvalue?.message ?? "Completed",
+    },
+  });
+
+  console.log(`✅ Job ${job.id} completed`);
+});
+
+// ❌ Failed event
+nodeWorker.on("failed", async (job, err) => {
+  const dbId = job.progress.dbId;
+  if (!dbId) return;
+
+  await prismaClient.jobs.update({
+    where: { id: dbId },
+    data: {
+      status: "failed",
+      message: err?.message ?? "Unknown error",
+    },
+  });
+
+  console.error(`❌ Job ${job?.id} failed:`, err);
+});

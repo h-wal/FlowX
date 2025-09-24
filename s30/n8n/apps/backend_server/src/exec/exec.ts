@@ -28,9 +28,13 @@ async function excecuteRouterFunction(req: Request, res: Response) {
       } = JSON.parse(workFlow.flow);
 
       for (const node of workFlowObject.nodes) {
-        await nodeQueue.add(`node-${node.id}`, node);
+        const nodeWithWorkflow = {
+           ...node,
+          workflowId: workFlowId,
+        };
+        await nodeQueue.add(`node-${node.id}`, nodeWithWorkflow);
         console.log(`added ${node.id} to queue`)
-        console.log(node)
+        console.log("thing added" ,nodeWithWorkflow)
       }
 
       console.log("queue addition complete")

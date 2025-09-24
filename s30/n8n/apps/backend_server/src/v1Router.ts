@@ -7,6 +7,7 @@ import credentialsRouter from "./credentials/credentials.js";
 import excecutionRouter from "./exec/exec.js";
 import signUpRouter from "./auth/singup.js";
 import signInRouter from "./auth/signin.js";
+import workFlowStatusRouter from "./workflow/status.js";
 
 const v1Router: Router = express.Router()
 
@@ -17,6 +18,7 @@ v1Router.use("/dashboard", dashbaordRouter)
 v1Router.use("/workflow", workFlowRouter)
 v1Router.use("/credentials", credentialsRouter)
 v1Router.use("/excecution", excecutionRouter)
+v1Router.use("/status", workFlowStatusRouter)
 
 v1Router.get("/", (req: Request,res: Response) => {
     res.send("Hello v1 world!!")

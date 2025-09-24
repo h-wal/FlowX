@@ -13,7 +13,7 @@ export function SourceHandle({ nodeId }: any){
         <Handle 
             type="source" 
             position={Position.Right} 
-            className="!bg-white !w-4 !h-4"
+            className="!bg-white !w-4 !h-4  fill-green-500"
         >
             <AnimatePresence>
                 {!isSourceConnected && (
@@ -24,10 +24,10 @@ export function SourceHandle({ nodeId }: any){
                     exit={{ width: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
-                    <div className="relative h-8">
+                    <div className="relative h-8 ">
                         {/* Line centered */}
                         <svg
-                            className="absolute top-1/2 -translate-y-1/2 pointer-events-none"
+                            className="absolute top-1/2 -translate-y-1/2 pointer-events-none "
                             width="100"
                             height="2"
                         >

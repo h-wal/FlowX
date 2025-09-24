@@ -44,6 +44,7 @@ async function signUpRouterFunction(req: Request, res: Response){
                     httpOnly: true,
                     secure: false,
                     sameSite: "lax",
+                    path: "/",
                 })
 
             } catch(e){

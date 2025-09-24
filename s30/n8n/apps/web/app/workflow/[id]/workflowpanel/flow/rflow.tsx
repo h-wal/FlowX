@@ -193,6 +193,9 @@ function RFlowInner(props: rflowInnerProps) {
       console.log("workflow Excecution called")
 
       setExcecuting(true);
+      axios.delete(`http://localhost:3030/api/v1/status/del?flowId=${props.workFlow.id}`, {
+        withCredentials: true
+      })
       axios.post("http://localhost:3030/api/v1/excecution", {
         workFlowId: props.workFlow.id
       },{
@@ -224,7 +227,16 @@ function RFlowInner(props: rflowInnerProps) {
     if (props.workFlow?.flow) {
       try {
         const parsed = JSON.parse(props.workFlow.flow);
-        setNodes(parsed.nodes || []);
+
+        const nodesWithWorkflowId = (parsed.nodes || []).map((n: any) => ({
+        ...n,
+        data: {
+          ...n.data,
+          workflowId: props.workFlow.id, // 👈 add it here
+        },
+        }));
+
+        setNodes(nodesWithWorkflowId);
         setEdges(parsed.edges || []);
 
         if (parsed.viewport) {

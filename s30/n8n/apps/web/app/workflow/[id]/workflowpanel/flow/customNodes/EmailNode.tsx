@@ -1,19 +1,36 @@
+//@ts-nocheck
 "use client"
 import { Handle, Position, useEdges } from "@xyflow/react"
 import { useState, useEffect } from "react"
 import { Settings, Trash2, Power, Play, MousePointer2Icon, Zap, Plus } from "lucide-react"
 import { MdEmail } from "react-icons/md"
 import { SourceHandle } from "./commonFeatures/sourceHandle"
+import { useWorkflowJobStatuses } from "../../useworkflowjobstatus"
 
 interface NodeProps {
   icon?: any
   onAdd?: (id: string) => void // callback for adding new node
   id: string
+  data: {
+    workflowId: string
+  }
   
 }
 
 export default function EmailNode(props: NodeProps) {
   const [showControls, setShowControls] = useState(false)
+
+  const workflowId = props.data.workflowId
+  const statuses = useWorkflowJobStatuses(workflowId);
+  const status = statuses[props.id] || "idle"; //check the id once
+
+  let bgColor = "[#c2c8d5]";
+  let showLoader = false;
+
+  if (status === "queued") { showLoader = true; bgColor = "border-[#fe6f5b]" };
+  if (status === "success") bgColor = "border-green-500";
+  if (status === "failed") bgColor = "border-red-500";
+
 
   return (
     <div className="flex flex-col items-center">
@@ -21,8 +38,14 @@ export default function EmailNode(props: NodeProps) {
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
         // onMouseLeave={() => setTimeout((() => {setShowControls(false)}), 1000)}
-        className="relative w-24 h-24 bg-[#3e3e3e] border-2 border-[#c2c8d5] rounded-md shadow flex items-center justify-center"
+        className={`relative w-24 h-24 bg-[#3e3e3e] border-2 ${bgColor} rounded-md shadow flex items-center justify-center`}
       >
+
+        {showLoader && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className={`w-14 h-14 border-12 border-[#fe6f5b] border-t-transparent rounded-full animate-spin`}></div>
+        </div>
+        )}
 
         {/* Top control panel */}
         {showControls && (
@@ -40,7 +63,7 @@ export default function EmailNode(props: NodeProps) {
         )}
 
         <div id="icon"className="text-white">
-          <MdEmail size={48} />
+          <MdEmail className="text-green-400" size={48} />
         </div>
 
         <Handle 
