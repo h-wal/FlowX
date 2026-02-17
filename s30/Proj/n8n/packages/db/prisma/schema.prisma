@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  email         String    @unique
+  password      String
+  credentials   Credentials[] 
+  workflow      Workflow[]
+  webhook       Webhook[]
+}
+
+model Credentials {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  type          String    @default("{}")
+  title         String    @unique
+  credential    Json      @unique
+  userId        String    @db.ObjectId 
+  user          User      @relation(fields: [userId], references: [id])
+}
+
+model Workflow {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  title         String?   @default("")
+  enabled       Boolean?  @default(false)
+  flow          String?   @default("")
+  userId        String    @db.ObjectId
+  user          User      @relation(fields: [userId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  jobs          Jobs[]
+}
+
+model Jobs {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  workflowID    String    @db.ObjectId
+  workflow      Workflow  @relation(fields: [workflowID], references: [id])
+  node          Json      
+  status        String    @default("")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  message       String    @default("")
+}
+
+model Webhook {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  url           String
+  userId        String    @db.ObjectId
+  user          User      @relation(fields: [userId], references: [id])
+}

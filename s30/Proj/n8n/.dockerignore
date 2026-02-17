@@ -1,0 +1,23 @@
+# Dependencies and build outputs (we install/build inside the image)
+node_modules
+**/node_modules
+.next
+.turbo
+**/dist
+**/.next
+
+# Git and IDE
+.git
+.gitignore
+.vscode
+.idea
+*.md
+
+# Env (pass at run time, not bake into image)
+.env
+.env.*
+!.env.example
+
+# Misc
+*.log
+.DS_Store

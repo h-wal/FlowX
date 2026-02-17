@@ -1,0 +1,33 @@
+{
+  "name": "@repo/worker-core",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./queue": "./dist/queue.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.77",
+    "@langchain/google-genai": "^0.2.18",
+    "@langchain/langgraph": "^0.4.9",
+    "@langchain/openai": "^0.6.13",
+    "@repo/db": "workspace:*",
+    "bullmq": "^5.58.5",
+    "dotenv": "^17.2.2",
+    "ioredis": "^5.7.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "nodemailer": "^7.0.6",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@types/node-telegram-bot-api": "^0.64.11",
+    "@types/nodemailer": "^7.0.1",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,33 @@
+"use client"
+import axios from "axios";
+import { useEffect, useState} from "react";
+import { API_BASE_URL } from "../lib/api";
+import LeftPanel from "./leftPanel/leftpanel";
+import RightPanel from "./rightPanel/rightPanel";
+
+
+export default function Dashboard() {
+    const [userId, setUserId] = useState<string | null>()
+    const [username, setUsername] = useState<string | null>()
+    const [email, setEmail] = useState<string | null>()
+    const [laoding, setLoading] = useState<string | null>()
+    
+    const [selectedMenu, setSelectedMenu] = useState("Overview")
+
+    useEffect(() => {
+      axios
+          .get(`${API_BASE_URL}/api/v1/dashboard`, {withCredentials: true})
+          .then(res => {console.log(res); setUserId(res.data.user.id); setEmail(res.data.user.email)})
+          .catch(err => {
+              console.log("axios Error" + err)
+          })
+    }, [])
+  
+
+  return (
+    <div className="flex flex-row h-screen w-screen ">
+      <LeftPanel setSelectedMenu={setSelectedMenu} ></LeftPanel>
+      <RightPanel selectedMenu={selectedMenu} ></RightPanel>
+    </div>
+  );
+}

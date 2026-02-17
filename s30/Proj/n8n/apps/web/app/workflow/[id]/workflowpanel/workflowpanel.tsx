@@ -1,0 +1,46 @@
+"use client"
+import personalIcon from "../../../icons/personalIcon"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { API_BASE_URL } from "../../../lib/api"
+import Header from "./header/header"
+import Flow from "./flow/flow"
+
+
+interface workFlowPanelProps{
+    params: any
+}
+
+export default function WorkFlowPanel(props: workFlowPanelProps){
+
+    const [workFlow, setWorkFlow] = useState<any>({})
+    const id = props.params.id
+    const [saved, setSaved] = useState(true)
+
+    useEffect(() => {
+        
+        const fetchData = async () => {
+            const res = await axios.get(`${API_BASE_URL}/api/v1/workflow/singleworkflow?flowId=${id}`, {
+                withCredentials: true
+            })
+
+            setWorkFlow(res.data)
+            console.log(workFlow)
+        }
+
+        fetchData()
+    }, [])
+
+    
+    return (
+        <div className="flex flex-col h-screen w-[85%]">
+            <Header workFlow={workFlow}></Header>
+            <Flow workFlow={workFlow}></Flow>
+            <div id="footer" className="bg-[#2e2e2e] border-t border-gray-500">
+                <div className="text-xs p-2 text-white">
+                    Logs
+                </div>
+            </div>
+        </div>
+    )
+}
